@@ -10,10 +10,10 @@ const ibmPlexSerif = IBM_Plex_Serif({
 });
 
 export const metadata: Metadata = {
-  title: "Nawaloka Inventory",
+  title: "StockNova",
   description: "Inventory System for Nawaloka Opticals",
   icons: {
-    icon: "/icons/logo.svg",
+    icon: "/icons/logo-icon.png",
   },
 };
 

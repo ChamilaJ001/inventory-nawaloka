@@ -7,6 +7,11 @@ declare type SearchParamProps = {
 
 // ========================================
 
+declare type ShopParams = {
+  name: string;
+  qty: number;
+};
+
 declare type SignUpParams = {
   firstName: string;
   lastName: string;

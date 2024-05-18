@@ -23,7 +23,9 @@ const config = {
         fill: {
           1: "rgba(255, 255, 255, 0.10)",
         },
-        bankGradient: "#0179FE",
+        blueGradient: "#0179FE",
+        primary: "#5d87ff",
+        primaryLight: "#ecf2ff",
         indigo: {
           500: "#6172F3",
           700: "#3538CD",
@@ -31,7 +33,8 @@ const config = {
         success: {
           25: "#F6FEF9",
           50: "#ECFDF3",
-          100: "#D1FADF",
+          100: "#e6fffa",
+          150: "#1cdfbc",
           600: "#039855",
           700: "#027A48",
           900: "#054F31",
@@ -39,13 +42,15 @@ const config = {
         blue: {
           25: "#F5FAFF",
           100: "#D1E9FF",
+          150: "  #49beff",
           500: "#2E90FA",
           600: "#1570EF",
           700: "#175CD3",
           900: "#194185",
         },
         sky: {
-          1: "#F3F9FF",
+          100: "#e8f7ff",
+          150: "#49beff",
         },
         black: {
           1: "#00214F",
@@ -59,6 +64,10 @@ const config = {
           600: "#475467",
           700: "#344054",
           900: "#101828",
+        },
+        orange: {
+          100: "#fdede8",
+          150: "#fa967b",
         },
       },
       boxShadow: {
