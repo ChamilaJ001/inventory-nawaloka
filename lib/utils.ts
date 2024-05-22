@@ -2,6 +2,7 @@
 import { type ClassValue, clsx } from "clsx";
 //import qs from "query-string";
 import { twMerge } from "tailwind-merge";
+import { z } from "zod";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -193,3 +194,44 @@ export function cn(...inputs: ClassValue[]) {
 
 //   return date > twoDaysAgo ? "Processing" : "Success";
 // };
+
+export const authFormSchema = () =>
+  z.object({
+    email: z.string().email(),
+    password: z
+      .string()
+      .min(8, "Password must contain at least 8 character(s)"),
+  });
+
+export const forgetPasswordFormSchema = () =>
+  z.object({
+    email: z.string().email(),
+  });
+
+export const resetPasswordFormSchema = () =>
+  z
+    .object({
+      password: z
+        .string()
+        .min(8, "Password must contain at least 8 character(s)"),
+      confirmPassword: z
+        .string()
+        .min(8, "Password must contain at least 8 character(s)"),
+    })
+    .refine((data) => data.password === data.confirmPassword, {
+      message: "Passwords don't match",
+      path: ["confirmPassword"], // Specify that the error message should be on the confirmPassword field
+    });
+
+export const shopFormSchema = () =>
+  z.object({
+    name: z.string({
+      required_error: "Shop name is required",
+    }),
+    city: z.string({
+      required_error: "City is required",
+    }),
+    status: z.string({
+      required_error: "Status is required",
+    }),
+  });

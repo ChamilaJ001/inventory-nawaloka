@@ -12,6 +12,10 @@ declare type ShopParams = {
   qty: number;
 };
 
+declare type PageHeadingParams = {
+  title: string;
+};
+
 declare type SignUpParams = {
   firstName: string;
   lastName: string;

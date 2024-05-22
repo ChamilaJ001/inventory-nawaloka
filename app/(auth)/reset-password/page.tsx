@@ -1,36 +1,37 @@
 "use client";
 
+import React from "react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import Image from "next/image";
 import { Form } from "@/components/ui/form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { authFormSchema } from "@/lib/utils";
+import { resetPasswordFormSchema } from "@/lib/utils";
 import { Loader2 } from "lucide-react";
 import CustomInput from "@/components/CustomInput";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
-import { Checkbox } from "@/components/ui/checkbox";
 import Link from "next/link";
 
-const SignIn = () => {
+const ResetPassword = () => {
   const [loading, setLoading] = useState(false);
 
-  const formSchema = authFormSchema();
+  const formSchema = resetPasswordFormSchema();
 
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      email: "",
       password: "",
+      confirmPassword: "",
     },
   });
 
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
     setLoading(true);
     console.log(data);
+
     try {
     } catch (error) {
       console.log(error);
@@ -50,25 +51,16 @@ const SignIn = () => {
             height={50}
           />
         </CardHeader>
+
         <CardContent>
-          <h2 className=" font-semibold text-center text-2xl mt-2">
-            Welcome Back!
-          </h2>
+          <p className="text-center text-15 text-gray-700">
+            Please create a new password and confirm it. After that you can
+            login with new password.
+          </p>
 
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-              <div className="mt-3">
-                <CustomInput
-                  control={form.control}
-                  name="email"
-                  label="Email"
-                  formSchema={formSchema}
-                  placeholder="Enter your email"
-                  type="text"
-                />
-              </div>
-
-              <div className="">
+              <div className="mt-5">
                 <CustomInput
                   control={form.control}
                   name="password"
@@ -77,37 +69,39 @@ const SignIn = () => {
                   placeholder="Enter your password"
                   type="password"
                 />
-              </div>
-
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <Checkbox />
-                  <p className="text-14">Remember this device</p>
+                <div className="mt-3">
+                  <CustomInput
+                    control={form.control}
+                    name="confirmPassword"
+                    label="Confirm Password"
+                    formSchema={formSchema}
+                    placeholder="Confirm your password"
+                    type="password"
+                  />
                 </div>
 
-                <Link
-                  href={"/forget-password"}
-                  className="text-14 font-semibold text-primary"
-                >
-                  Forget password?
-                </Link>
-              </div>
-
-              <div className="flex flex-col gap-4">
-                <Button
-                  type="submit"
-                  className="text-16 rounded-lg border border-primary bg-primary font-semibold text-white"
-                  disabled={loading}
-                >
-                  {loading ? (
-                    <>
-                      <Loader2 size={20} className="animate-spin" /> &nbsp;
-                      Loading...
-                    </>
-                  ) : (
-                    "Sign In"
-                  )}
-                </Button>
+                <div className="flex flex-col gap-4 mt-4">
+                  <Button
+                    type="submit"
+                    className=" rounded-lg border border-primary bg-primary font-semibold text-white"
+                    disabled={loading}
+                  >
+                    {loading ? (
+                      <>
+                        <Loader2 size={20} className="animate-spin" /> &nbsp;
+                        Loading...
+                      </>
+                    ) : (
+                      <p className="text-16">Reset Password</p>
+                    )}
+                  </Button>
+                  <Link
+                    href={"/sign-in"}
+                    className="text-16 rounded-lg border bg-primaryLight font-semibold text-primary px-4 py-2 text-center hover:text-white hover:bg-primary ease-in-out duration-200"
+                  >
+                    Back to login
+                  </Link>
+                </div>
               </div>
             </form>
           </Form>
@@ -117,4 +111,4 @@ const SignIn = () => {
   );
 };
 
-export default SignIn;
+export default ResetPassword;
