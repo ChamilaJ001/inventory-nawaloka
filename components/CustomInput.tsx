@@ -11,6 +11,7 @@ interface CustomInput {
   label: string;
   placeholder: string;
   type: string;
+  required: boolean;
 }
 
 const CustomInput = ({
@@ -20,6 +21,7 @@ const CustomInput = ({
   placeholder,
   type,
   formSchema,
+  required,
 }: CustomInput) => {
   return (
     <FormField
@@ -27,7 +29,12 @@ const CustomInput = ({
       name={name}
       render={({ field }) => (
         <div className="form-item">
-          <FormLabel className="form-label">{label ? label : ""}</FormLabel>
+          <FormLabel
+            className={`form-label ${required && "flex items-center gap-1"}`}
+          >
+            {label ? label : ""}
+            {required && <p className="text-red-500">*</p>}
+          </FormLabel>
           <div className="flex w-full flex-col">
             <FormControl>
               <Input

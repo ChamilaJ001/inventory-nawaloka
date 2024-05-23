@@ -68,6 +68,7 @@ const ResetPassword = () => {
                   formSchema={formSchema}
                   placeholder="Enter your password"
                   type="password"
+                  required={true}
                 />
                 <div className="mt-3">
                   <CustomInput
@@ -77,6 +78,7 @@ const ResetPassword = () => {
                     formSchema={formSchema}
                     placeholder="Confirm your password"
                     type="password"
+                    required={true}
                   />
                 </div>
 

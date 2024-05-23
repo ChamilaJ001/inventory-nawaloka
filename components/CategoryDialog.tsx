@@ -12,24 +12,24 @@ import { Form } from "@/components/ui/form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { shopFormSchema } from "@/lib/utils";
+import { categoryFormSchema } from "@/lib/utils";
 import { Loader2 } from "lucide-react";
 import CustomInput from "@/components/CustomInput";
 import { useState } from "react";
 import CustomSelect from "./SelectBox";
-import { BsShop } from "react-icons/bs";
+import { BiCategoryAlt } from "react-icons/bi";
 
-const ShopsDialog = () => {
+const CategoryDialog = () => {
   const [loading, setLoading] = useState(false);
 
-  const formSchema = shopFormSchema();
+  const formSchema = categoryFormSchema();
 
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
-      city: "",
+      code: "",
       status: "",
     },
   });
@@ -49,18 +49,18 @@ const ShopsDialog = () => {
     <Dialog>
       <DialogTrigger>
         <Button className="text-white font-semibold text-15">
-          Add new shops
+          Add new categories
         </Button>
       </DialogTrigger>
       <DialogContent className="bg-white max-sm:w-[350px] max-sm:rounded-md">
         <DialogHeader className="mt-6 items-start">
           <h6 className="font-bold text-20 mb-3 flex items-center gap-2">
             {" "}
-            <BsShop
+            <BiCategoryAlt
               className="bg-primaryLight text-primary p-2 rounded-md"
               size={35}
             />
-            Create New Shops
+            Create New categories
           </h6>
         </DialogHeader>
 
@@ -71,18 +71,18 @@ const ShopsDialog = () => {
                 <CustomInput
                   control={form.control}
                   name="name"
-                  label="Shop Name"
+                  label="Category Name"
                   formSchema={formSchema}
-                  placeholder="Enter shop name"
+                  placeholder="Enter category name"
                   type="text"
                   required={true}
                 />
                 <CustomInput
                   control={form.control}
-                  name="city"
-                  label="City"
+                  name="code"
+                  label="Code"
                   formSchema={formSchema}
-                  placeholder="Enter city"
+                  placeholder="Enter code"
                   type="text"
                   required={true}
                 />
@@ -109,7 +109,7 @@ const ShopsDialog = () => {
                         Loading...
                       </>
                     ) : (
-                      <p className="text-white">Create shop</p>
+                      <p className="text-white">Create category</p>
                     )}
                   </Button>
                 </div>
@@ -122,4 +122,4 @@ const ShopsDialog = () => {
   );
 };
 
-export default ShopsDialog;
+export default CategoryDialog;

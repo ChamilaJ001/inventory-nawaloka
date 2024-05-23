@@ -65,6 +65,7 @@ const SignIn = () => {
                   formSchema={formSchema}
                   placeholder="Enter your email"
                   type="text"
+                  required={false}
                 />
               </div>
 
@@ -76,6 +77,7 @@ const SignIn = () => {
                   formSchema={formSchema}
                   placeholder="Enter your password"
                   type="password"
+                  required={false}
                 />
               </div>
 

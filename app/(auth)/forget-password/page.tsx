@@ -85,6 +85,7 @@ const ForgetPassword = () => {
                     formSchema={formSchema}
                     placeholder="Enter your email"
                     type="text"
+                    required={false}
                   />
 
                   {/* <div className="text-sm mt-1 flex items-center justify-end gap-1">

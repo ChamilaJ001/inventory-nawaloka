@@ -12,24 +12,26 @@ import { Form } from "@/components/ui/form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { shopFormSchema } from "@/lib/utils";
+import { salesFormSchema } from "@/lib/utils";
 import { Loader2 } from "lucide-react";
 import CustomInput from "@/components/CustomInput";
 import { useState } from "react";
 import CustomSelect from "./SelectBox";
-import { BsShop } from "react-icons/bs";
+import { BiCategoryAlt } from "react-icons/bi";
+import { FiEdit } from "react-icons/fi";
 
-const ShopsDialog = () => {
+const SalesDialog = () => {
   const [loading, setLoading] = useState(false);
 
-  const formSchema = shopFormSchema();
+  const formSchema = salesFormSchema();
 
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: "",
-      city: "",
+      invoice: "",
+      quantity: 0,
+      total: 0,
       status: "",
     },
   });
@@ -48,19 +50,17 @@ const ShopsDialog = () => {
   return (
     <Dialog>
       <DialogTrigger>
-        <Button className="text-white font-semibold text-15">
-          Add new shops
-        </Button>
+        <FiEdit size={16} />
       </DialogTrigger>
       <DialogContent className="bg-white max-sm:w-[350px] max-sm:rounded-md">
         <DialogHeader className="mt-6 items-start">
           <h6 className="font-bold text-20 mb-3 flex items-center gap-2">
             {" "}
-            <BsShop
+            <BiCategoryAlt
               className="bg-primaryLight text-primary p-2 rounded-md"
               size={35}
             />
-            Create New Shops
+            Create New sales
           </h6>
         </DialogHeader>
 
@@ -70,20 +70,31 @@ const ShopsDialog = () => {
               <div className="flex flex-col gap-4 ">
                 <CustomInput
                   control={form.control}
-                  name="name"
-                  label="Shop Name"
+                  name="invoice"
+                  label="Invoice Number"
                   formSchema={formSchema}
-                  placeholder="Enter shop name"
+                  placeholder="Enter invoice number"
                   type="text"
                   required={true}
                 />
+
                 <CustomInput
                   control={form.control}
-                  name="city"
-                  label="City"
+                  name="quantity"
+                  label="Quantity"
                   formSchema={formSchema}
-                  placeholder="Enter city"
-                  type="text"
+                  placeholder="Enter quantity"
+                  type="number"
+                  required={true}
+                />
+
+                <CustomInput
+                  control={form.control}
+                  name="total"
+                  label="Total Amount"
+                  formSchema={formSchema}
+                  placeholder="Enter total amount"
+                  type="number"
                   required={true}
                 />
 
@@ -91,9 +102,9 @@ const ShopsDialog = () => {
                   control={form.control}
                   name={"status"}
                   formSchema={formSchema}
-                  label="Status"
+                  label="Payment Status"
                   placeholder="Select status"
-                  options={["Active", "Inactive"]}
+                  options={["Success", "Pending"]}
                   required={true}
                 />
 
@@ -109,7 +120,7 @@ const ShopsDialog = () => {
                         Loading...
                       </>
                     ) : (
-                      <p className="text-white">Create shop</p>
+                      <p className="text-white">Create sale</p>
                     )}
                   </Button>
                 </div>
@@ -122,4 +133,4 @@ const ShopsDialog = () => {
   );
 };
 
-export default ShopsDialog;
+export default SalesDialog;

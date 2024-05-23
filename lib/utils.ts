@@ -225,13 +225,50 @@ export const resetPasswordFormSchema = () =>
 
 export const shopFormSchema = () =>
   z.object({
-    name: z.string({
-      required_error: "Shop name is required",
-    }),
-    city: z.string({
-      required_error: "City is required",
-    }),
-    status: z.string({
-      required_error: "Status is required",
-    }),
+    name: z.string().nonempty("Name is required"),
+    city: z.string().nonempty("City is required"),
+    status: z.string().nonempty("Status is required"),
+  });
+
+export const categoryFormSchema = () =>
+  z.object({
+    name: z.string().nonempty("Name is required"),
+    code: z.string().nonempty("Code is required"),
+    status: z.string().nonempty("Status is required"),
+  });
+
+export const productsFormSchema = () =>
+  z.object({
+    name: z.string().nonempty("Name is required"),
+    code: z.string().nonempty("Code is required"),
+    category: z.string().nonempty("Category is required"),
+    shop: z.string().nonempty("Shop is required"),
+    quantity: z
+      .string()
+      .transform((val) => Number(val))
+      .refine((val) => !isNaN(val), "Quantity must be a number"),
+  });
+
+export const userFormSchema = () =>
+  z.object({
+    name: z.string().nonempty("User name is required"),
+    email: z.string().email(),
+    role: z.string().nonempty("User role is required"),
+    shop: z.string().nonempty("Shop is required"),
+    password: z.string().nonempty("Password is required"),
+    status: z.string().nonempty("Status is required"),
+  });
+
+export const salesFormSchema = () =>
+  z.object({
+    invoice: z.string().nonempty("Invoice number is required"),
+    quantity: z
+      .string()
+      .transform((val) => Number(val))
+      .refine((val) => !isNaN(val), "Quantity must be a number"),
+    total: z
+      .string()
+      .transform((val) => Number(val))
+      .refine((val) => !isNaN(val), "Total must be a number"),
+    status: z.string().nonempty("Status is required"),
   });

@@ -35,6 +35,7 @@ const config = {
           50: "#ECFDF3",
           100: "#e6fffa",
           150: "#1cdfbc",
+          200: "#18ccab",
           600: "#039855",
           700: "#027A48",
           900: "#054F31",
@@ -69,8 +70,8 @@ const config = {
           100: "#fdede8",
           150: "#fa967b",
         },
-        loginBack:
-          "radial-gradient(rgb(210, 241, 223), rgb(211, 215, 250), rgb(186, 216, 244))",
+        gradient1: "rgb(80, 178, 252)",
+        gradient2: "rgb(244, 76, 102)",
       },
       boxShadow: {
         form: "0px 1px 2px 0px rgba(16, 24, 40, 0.05)",

@@ -13,6 +13,7 @@ import { IoCartOutline } from "react-icons/io5";
 import { LuUsers } from "react-icons/lu";
 import { RiExchange2Line } from "react-icons/ri";
 import { IoMdLogOut } from "react-icons/io";
+import { TbSettings } from "react-icons/tb";
 
 const SideBar = () => {
   const pathname = usePathname();
@@ -81,8 +82,15 @@ const SideBar = () => {
                     })}
                     size={23}
                   />
-                ) : item.label === "Transfer History" ? (
+                ) : item.label === "Daily Sales" ? (
                   <RiExchange2Line
+                    className={cn({
+                      "!text-white": isActive,
+                    })}
+                    size={23}
+                  />
+                ) : item.label === "Settings" ? (
+                  <TbSettings
                     className={cn({
                       "!text-white": isActive,
                     })}

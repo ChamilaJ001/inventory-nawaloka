@@ -14,6 +14,12 @@ declare type ShopParams = {
 
 declare type PageHeadingParams = {
   title: string;
+  bred3?: string;
+  bred3link?: string;
+};
+
+declare type SettingsParams = {
+  module?: string;
 };
 
 declare type SignUpParams = {

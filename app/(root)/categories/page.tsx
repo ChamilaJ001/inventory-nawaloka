@@ -3,32 +3,32 @@ import PageHeading from "@/components/PageHeading";
 import SideBar from "@/components/SideBar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import React from "react";
-import { BsShop } from "react-icons/bs";
-import { ShopsProps, columns } from "./columns";
+import { BiCategoryAlt } from "react-icons/bi";
+import { CategoriesProps, columns } from "./columns";
 import { DataTable } from "./data-table";
-import ShopsDialog from "@/components/ShopsDialog";
+import CategoryDialog from "@/components/CategoryDialog";
 
-const Shops = async () => {
-  async function getData(): Promise<ShopsProps[]> {
+const Categories = async () => {
+  async function getData(): Promise<CategoriesProps[]> {
     // Fetch data from your API here.
     return [
       {
         id: "728ed52f",
-        city: "Kurunegala",
+        code: "674839",
         status: "Active",
-        shopName: "Nawaloka Kurunegala",
+        name: "Sunglasses",
       },
       {
         id: "728ed52g",
-        city: "Kandy",
+        code: "537825",
         status: "Active",
-        shopName: "Nawaloka Kandy",
+        name: "Glass Frames",
       },
       {
         id: "728ed52h",
-        city: "Polonnaruwa",
+        code: "482292",
         status: "Active",
-        shopName: "Nawaloka Polonnaruwa",
+        name: "Reading Glasses",
       },
     ];
   }
@@ -42,22 +42,22 @@ const Shops = async () => {
         </header>
 
         <section className="px-2">
-          <PageHeading title={"Manage Shops"} />
+          <PageHeading title={"Manage Categories"} />
 
           <div className="mt-5">
             <div className="text-end text-white max-w-sm:px-12">
-              <ShopsDialog />
+              <CategoryDialog />
             </div>
 
             <Card className="shadow-lg mt-3">
               <CardHeader>
                 <CardTitle className="px-3 flex items-center justify-between">
                   <div className="flex items-center gap-4 text-20 max-sm:text-[17px]">
-                    <BsShop
+                    <BiCategoryAlt
                       className="bg-primaryLight text-primary p-2 rounded-md hover:bg-indigo-500 ease-in-out duration-200"
                       size={35}
                     />
-                    Shops Details
+                    Category Details
                   </div>
                 </CardTitle>
               </CardHeader>
@@ -73,4 +73,4 @@ const Shops = async () => {
   );
 };
 
-export default Shops;
+export default Categories;

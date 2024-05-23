@@ -26,8 +26,13 @@ export const sidebarLinks = [
   },
   {
     imgURL: "/icons/home.svg",
-    route: "/transfer-history",
-    label: "Transfer History",
+    route: "/daily-sales",
+    label: "Daily Sales",
+  },
+  {
+    imgURL: "/icons/home.svg",
+    route: "/settings",
+    label: "Settings",
   },
 ];
 

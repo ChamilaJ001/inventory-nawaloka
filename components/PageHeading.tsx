@@ -8,7 +8,7 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 
-const PageHeading = ({ title }: PageHeadingParams) => {
+const PageHeading = ({ title, bred3, bred3link }: PageHeadingParams) => {
   return (
     <div className="bg-primaryLight rounded-md py-6 px-9 max-xl:px-5 ">
       <p className="text-18 font-semibold  items-center gap-2">{title}</p>
@@ -20,6 +20,18 @@ const PageHeading = ({ title }: PageHeadingParams) => {
               Home
             </BreadcrumbLink>
           </BreadcrumbItem>
+          {bred3 ? (
+            <>
+              <BreadcrumbSeparator />
+              <BreadcrumbItem>
+                <BreadcrumbLink href={bred3link} className="text-gray-600">
+                  {bred3}
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+            </>
+          ) : (
+            ""
+          )}
           <BreadcrumbSeparator />
           <BreadcrumbItem>
             <BreadcrumbPage className="text-gray-600">{title}</BreadcrumbPage>

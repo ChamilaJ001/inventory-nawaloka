@@ -16,6 +16,8 @@ interface CustomSelect {
   name: any;
   label: string;
   placeholder: string;
+  options: any;
+  required: boolean;
 }
 
 const CustomSelect = ({
@@ -24,6 +26,8 @@ const CustomSelect = ({
   label,
   formSchema,
   placeholder,
+  options,
+  required,
 }: CustomSelect) => {
   return (
     <FormField
@@ -31,7 +35,12 @@ const CustomSelect = ({
       name={name}
       render={({ field }) => (
         <div className="form-item">
-          <FormLabel className="form-label ">{label ? label : ""}</FormLabel>
+          <FormLabel
+            className={`form-label ${required && "flex items-center gap-1"}`}
+          >
+            {label ? label : ""}
+            {required && <p className="text-red-500">*</p>}
+          </FormLabel>
           <div className="flex w-full flex-col">
             <Select onValueChange={field.onChange} defaultValue={field.value}>
               <FormControl>
@@ -40,24 +49,15 @@ const CustomSelect = ({
                 </SelectTrigger>
               </FormControl>
               <SelectContent className="bg-white">
-                <SelectItem
-                  value="m@example.com"
-                  className="hover:bg-gray-50 ease-in-out duration-200 cursor-pointer"
-                >
-                  m@example.com
-                </SelectItem>
-                <SelectItem
-                  value="m@google.com"
-                  className="hover:bg-gray-50 ease-in-out duration-200 cursor-pointer"
-                >
-                  m@google.com
-                </SelectItem>
-                <SelectItem
-                  value="m@support.com"
-                  className="hover:bg-gray-50 ease-in-out duration-200 cursor-pointer"
-                >
-                  m@support.com
-                </SelectItem>
+                {options.map((option: any, i: number) => (
+                  <SelectItem
+                    key={i}
+                    value={option}
+                    className="hover:bg-gray-50 ease-in-out duration-200 cursor-pointer"
+                  >
+                    {option}
+                  </SelectItem>
+                ))}
               </SelectContent>
             </Select>
             <FormMessage className="form-message mt-2" />
