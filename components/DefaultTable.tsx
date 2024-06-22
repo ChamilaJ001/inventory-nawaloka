@@ -2,15 +2,39 @@ import React from "react";
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { data } from "@/lib/data";
 
 const DefaultTable = () => {
+  const data: any = [
+    {
+      code: "1234",
+      name: "Test",
+      category: "Sunglasses",
+      shop: "Kurunegala",
+    },
+    {
+      code: "1234",
+      name: "Test",
+      category: "Sunglasses",
+      shop: "Kurunegala",
+    },
+    {
+      code: "1234",
+      name: "Test",
+      category: "Sunglasses",
+      shop: "Kurunegala",
+    },
+    {
+      code: "1234",
+      name: "Test",
+      category: "Sunglasses",
+      shop: "Kurunegala",
+    },
+  ];
   return (
     <Table>
       <TableHeader>
@@ -24,7 +48,7 @@ const DefaultTable = () => {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {data.map((d) => {
+        {data.map((d: any) => {
           return (
             <TableRow
               key={d.code}

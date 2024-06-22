@@ -14,7 +14,6 @@ import { useState, useTransition } from "react";
 import { Checkbox } from "@/components/ui/checkbox";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { login } from "@/actions/login";
 import { signIn } from "@/auth";
 import toast from "react-hot-toast";
 import { AuthError } from "next-auth";
@@ -39,9 +38,9 @@ const SignIn = () => {
     setLoading(true);
     const email = data.email;
     const password = data.password;
-    startTransition(() => {
-      const res = login(data);
-    });
+    // startTransition(() => {
+    //   const res = login(data);
+    // });
 
     // try {
     //   const res = await signIn("credentials", {

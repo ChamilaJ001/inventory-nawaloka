@@ -9,9 +9,6 @@ import ProductsByShop from "./ProductsByShop";
 import { LuUsers } from "react-icons/lu";
 import AnimatedCounter from "./AnimatedCounter";
 import { auth } from "@/auth";
-import { getUserByEmail } from "@/lib/data";
-// import { getServerSession } from "next-auth/next";
-// import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
 const Hero = async () => {
   // const session = await getServerSession(authOptions);

@@ -2,7 +2,6 @@ import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { AiFillProduct } from "react-icons/ai";
 import { BsShop } from "react-icons/bs";
-import { shops } from "@/lib/data";
 import { Button } from "./ui/button";
 import Link from "next/link";
 import AnimatedCounter from "./AnimatedCounter";
@@ -37,6 +36,20 @@ const Shop = ({ name, qty }: ShopParams) => {
 };
 
 const ProductsByShop = () => {
+  const shops = [
+    {
+      name: "Kurunegala",
+      qty: 124,
+    },
+    {
+      name: "Kandy",
+      qty: 24,
+    },
+    {
+      name: "Polonnaruwa",
+      qty: 244,
+    },
+  ];
   return (
     <Card className="shadow-lg">
       <CardHeader>
