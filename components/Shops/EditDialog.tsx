@@ -3,11 +3,10 @@
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
 import { Form } from "@/components/ui/form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -15,8 +14,8 @@ import { useForm } from "react-hook-form";
 import { shopFormSchema } from "@/lib/utils";
 import { Loader2 } from "lucide-react";
 import CustomInput from "@/components/CustomInput";
-import { useState } from "react";
-import CustomSelect from "./SelectBox";
+import { useEffect, useState } from "react";
+import CustomSelect from "../SelectBox";
 import { BsShop } from "react-icons/bs";
 import axios from "axios";
 import toast from "react-hot-toast";
@@ -28,57 +27,73 @@ type Prop = {
   setShopData?: any;
 };
 
+const wait = () => new Promise((resolve) => setTimeout(resolve, 500));
+
 const EditDialog = ({ selectedShop, shopData, setShopData }: Prop) => {
   const [loading, setLoading] = useState(false);
+  const [open, setOpen] = useState(false);
 
-  const formSchema = shopFormSchema();
+  const formSchema: any = shopFormSchema();
 
-  // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: selectedShop?.shopName,
-      city: selectedShop?.city,
-      status: selectedShop?.status,
+      name: selectedShop?.shopName || "",
+      city: selectedShop?.city || "",
+      status: selectedShop?.status || "",
     },
   });
 
-  const onSubmit = async (data: z.infer<typeof formSchema>) => {
-    console.log(data);
-    // setLoading(true);
-    // const id = selectedShop?._id;
-    // const shopName = data.name;
-    // const city = data.city;
-    // const status = data.status;
-    // try {
-    //   const res = await axios.put("/api/shops", {
-    //     id,
-    //     shopName,
-    //     city,
-    //     status,
-    //   });
+  useEffect(() => {
+    form.reset({
+      name: selectedShop?.shopName || "",
+      city: selectedShop?.city || "",
+      status: selectedShop?.status || "",
+    });
+  }, [selectedShop, form]);
 
-    //   if (res.status === 404) {
-    //     toast.error("Shop not found!");
-    //   }
-    //   if (res.status === 201) {
-    //     setShopData([...shopData, res.data]);
-    //     form.reset();
-    //     toast.success("Successfully updated!");
-    //   }
-    // } catch (error) {
-    //   console.log(error);
-    //   toast.error("Faild to update shop!");
-    // } finally {
-    //   setLoading(false);
-    // }
+  const onSubmit = async (data: z.infer<typeof formSchema>) => {
+    setLoading(true);
+    const id = selectedShop?._id;
+    const shopName = data.name;
+    const city = data.city;
+    const status = data.status;
+    try {
+      const res = await axios.put("/api/shops", {
+        id,
+        shopName,
+        city,
+        status,
+      });
+
+      if (res.status === 404) {
+        toast.error("Shop not found!");
+      }
+      if (res.status === 201) {
+        const updatedShop = res.data;
+        const updatedShopData = shopData.map((shop: any) =>
+          shop._id === updatedShop._id ? updatedShop : shop
+        );
+
+        setShopData(updatedShopData);
+        wait().then(() => setOpen(false));
+        form.reset();
+        toast.success("Successfully updated!");
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("Faild to update shop!");
+    } finally {
+      setLoading(false);
+    }
   };
 
-  //console.log(selectedShop);
-
   return (
-    <Dialog>
-      <DialogTrigger className="text-14 flex items-center gap-2 hover:bg-gray-50 cursor-pointer ease-in-out duration-200">
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger
+        asChild
+        className="text-14 flex items-center gap-2 hover:bg-gray-50 cursor-pointer ease-in-out duration-200"
+      >
         <FiEdit size={16} />
       </DialogTrigger>
       <DialogContent className="bg-white max-sm:w-[350px] max-sm:rounded-md">

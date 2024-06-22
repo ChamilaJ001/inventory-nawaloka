@@ -5,6 +5,7 @@ const shopSchema = new mongoose.Schema(
     shopName: { type: String, required: true },
     city: { type: String, required: true },
     status: { type: String, required: true },
+    is_delete: { type: Number, required: true },
   },
   { timestamps: true }
 );

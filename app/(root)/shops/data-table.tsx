@@ -31,11 +31,11 @@ import {
 import { Input } from "@/components/ui/input";
 import React, { useState } from "react";
 import { DataTablePagination } from "@/components/DataTablePagination";
-import { DropdownMenuItem } from "@radix-ui/react-dropdown-menu";
-import { MoreHorizontal } from "lucide-react";
-import { IoTrashOutline } from "react-icons/io5";
-import ShopsDialog from "@/components/ShopsDialog";
-import EditDialog from "@/components/EditDialog";
+
+import EditDialog from "@/components/Shops/EditDialog";
+import axios from "axios";
+import toast from "react-hot-toast";
+import DeleteAlertBox from "@/components/Reusable/DeleteAlertBox";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -48,6 +48,7 @@ export function DataTable<TData, TValue>({
   data,
   setShopData,
 }: DataTableProps<TData, TValue>) {
+  const [loading, setLoading] = useState(false);
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -73,8 +74,43 @@ export function DataTable<TData, TValue>({
   });
 
   const [selectedShop, setSelectedShop] = useState(null);
+  //const [selectedId, setSelectedId] = useState(null);
+
   const handleEditClick = (shopData: any) => {
-    setSelectedShop(shopData); // Set the selected shop for edit
+    setSelectedShop(shopData);
+  };
+
+  const handleGetId = (id: any) => {
+    setSelectedShop(id);
+  };
+
+  const handleDelete = async () => {
+    setLoading(true);
+    const id = selectedShop?._id;
+    try {
+      const res = await axios.delete("/api/shops", {
+        data: { id },
+      });
+
+      if (res.status === 404) {
+        toast.error("Shop not found!");
+      }
+
+      if (res.status === 200) {
+        const deletedShop = res.data;
+        const updatedShopData = data.filter(
+          (shop: any) => shop._id !== deletedShop._id
+        );
+
+        setShopData(updatedShopData);
+        toast.success("Successfully deleted!");
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("Faild to delete shop!");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -166,31 +202,9 @@ export function DataTable<TData, TValue>({
                         />
                       </div>
 
-                      <div>
-                        <IoTrashOutline size={17} />
+                      <div onClick={() => handleGetId(row.original)}>
+                        <DeleteAlertBox handleDelete={handleDelete} />
                       </div>
-
-                      {/* <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" className="h-8 w-8 p-0 ">
-                            <span className="sr-only">Open menu</span>
-                            <MoreHorizontal className="h-4 w-4" />
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end" className="bg-white">
-                          <DropdownMenuItem className="text-14 flex items-center gap-2 hover:bg-gray-50 cursor-pointer ease-in-out duration-200">
-                            <FiEdit size={16} />
-                            <EditDialog />
-                          </DropdownMenuItem>
-                          <DropdownMenuItem
-                            onClick={() => handleEditClick(row.original)}
-                            className="flex items-center gap-2 hover:bg-gray-50 cursor-pointer ease-in-out duration-200"
-                          >
-                            <IoTrashOutline size={17} />
-                            Delete
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu> */}
                     </div>
                   </TableCell>
                 </TableRow>

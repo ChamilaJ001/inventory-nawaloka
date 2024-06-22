@@ -29,6 +29,7 @@ export default async function RootLayout({
     <html lang="en">
       <body className={`${inter.variable} ${ibmPlexSerif.variable}`}>
         {/* <AuthProvider session={session}>{children}</AuthProvider> */}
+
         {children}
       </body>
     </html>

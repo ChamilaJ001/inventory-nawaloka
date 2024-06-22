@@ -5,6 +5,7 @@ import Shop from "@/models/Shop";
 //Insert
 export const POST = async (req: NextRequest) => {
   const { shopName, city, status } = await req.json();
+  const is_delete = 0;
 
   await connectDB();
   const existingCity = await Shop.findOne({ shopName });
@@ -18,6 +19,7 @@ export const POST = async (req: NextRequest) => {
     shopName,
     city,
     status,
+    is_delete,
   });
 
   try {
@@ -32,7 +34,7 @@ export const POST = async (req: NextRequest) => {
 export const GET = async () => {
   await connectDB();
   try {
-    const shops = await Shop.find();
+    const shops = await Shop.find({ is_delete: 0 });
     if (shops) {
       return new NextResponse(JSON.stringify(shops), { status: 200 });
     } else {
@@ -64,5 +66,29 @@ export const PUT = async (req: NextRequest) => {
     return new NextResponse(JSON.stringify(updatedShop), { status: 201 });
   } catch (error) {
     return NextResponse.json(error, { status: 500 });
+  }
+};
+
+// Delete
+export const DELETE = async (req: NextRequest) => {
+  const { id } = await req.json();
+
+  await connectDB();
+  try {
+    const deletedShop = await Shop.findByIdAndUpdate(
+      id,
+      { is_delete: 1 },
+      { new: true }
+    );
+
+    if (!deletedShop) {
+      return new NextResponse(JSON.stringify({ message: "Shop not found" }), {
+        status: 404,
+      });
+    }
+
+    return new NextResponse(JSON.stringify(deletedShop), { status: 200 });
+  } catch (error) {
+    return new NextResponse(JSON.stringify(error), { status: 500 });
   }
 };

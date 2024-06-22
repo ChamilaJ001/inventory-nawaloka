@@ -8,7 +8,7 @@ import React, { useEffect, useState } from "react";
 import { BsShop } from "react-icons/bs";
 import { columns } from "./columns";
 import { DataTable } from "./data-table";
-import ShopsDialog from "@/components/ShopsDialog";
+import ShopsDialog from "@/components/Shops/ShopsDialog";
 import axios from "axios";
 import { Loader } from "lucide-react";
 
@@ -67,7 +67,11 @@ const Shops = () => {
                     <Loader size={20} className="animate-spin" />
                   </div>
                 ) : (
-                  <DataTable columns={columns} data={shopData} setShopData={setShopData}/>
+                  <DataTable
+                    columns={columns}
+                    data={shopData}
+                    setShopData={setShopData}
+                  />
                 )}
               </CardContent>
             </Card>
