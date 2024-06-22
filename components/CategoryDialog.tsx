@@ -109,7 +109,7 @@ const CategoryDialog = () => {
                         Loading...
                       </>
                     ) : (
-                      <p className="text-white">Create category</p>
+                      "Create category"
                     )}
                   </Button>
                 </div>

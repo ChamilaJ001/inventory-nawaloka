@@ -120,7 +120,7 @@ const SalesDialog = () => {
                         Loading...
                       </>
                     ) : (
-                      <p className="text-white">Create sale</p>
+                      "Create sale"
                     )}
                   </Button>
                 </div>

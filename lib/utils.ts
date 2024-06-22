@@ -272,3 +272,27 @@ export const salesFormSchema = () =>
       .refine((val) => !isNaN(val), "Total must be a number"),
     status: z.string().nonempty("Status is required"),
   });
+
+export const accountFormSchema = () =>
+  z.object({
+    name: z.string().nonempty("User name is required"),
+    email: z.string().email(),
+  });
+
+export const newPasswordFormSchema = () =>
+  z
+    .object({
+      password: z
+        .string()
+        .min(8, "Password must contain at least 8 character(s)"),
+      newPassword: z
+        .string()
+        .min(8, "New password must contain at least 8 character(s)"),
+      confirmPassword: z
+        .string()
+        .min(8, "Password must contain at least 8 character(s)"),
+    })
+    .refine((data) => data.newPassword === data.confirmPassword, {
+      message: "Passwords don't match",
+      path: ["confirmPassword"], // Specify that the error message should be on the confirmPassword field
+    });

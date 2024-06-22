@@ -12,6 +12,9 @@ interface CustomInput {
   placeholder: string;
   type: string;
   required: boolean;
+  disable?: boolean;
+  value?: any;
+  defaultValue?: any;
 }
 
 const CustomInput = ({
@@ -22,6 +25,9 @@ const CustomInput = ({
   type,
   formSchema,
   required,
+  disable,
+  value,
+  defaultValue,
 }: CustomInput) => {
   return (
     <FormField
@@ -42,6 +48,9 @@ const CustomInput = ({
                 className="input-class"
                 type={type}
                 {...field}
+                disabled={disable}
+                value={value}
+                defaultValue={defaultValue}
               />
             </FormControl>
             <FormMessage className="form-message mt-2" />

@@ -11,6 +11,8 @@ import { Loader2 } from "lucide-react";
 import CustomInput from "@/components/CustomInput";
 import { useState } from "react";
 import CustomSelect from "./SelectBox";
+import axios from "axios";
+import { toast } from "react-hot-toast";
 
 function UsersForm() {
   const [loading, setLoading] = useState(false);
@@ -33,7 +35,27 @@ function UsersForm() {
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
     setLoading(true);
     console.log(data);
+    const username = data.name;
+    const email = data.email;
+    const role = data.role;
+    const shop = data.shop;
+    const password = data.password;
+    const status = data.status;
     try {
+      const res = await axios.post("/api/users", {
+        username,
+        email,
+        role,
+        shop,
+        password,
+        status,
+      });
+
+      if (res.status === 400) {
+        toast.error("Email already registered!");
+      } else if (res.status == 201) {
+        toast.success("Successfully created!");
+      }
     } catch (error) {
       console.log(error);
     } finally {
@@ -119,7 +141,7 @@ function UsersForm() {
                   Loading...
                 </>
               ) : (
-                <p className="text-white">Create user</p>
+                "Create user"
               )}
             </Button>
           </div>

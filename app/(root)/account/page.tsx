@@ -1,4 +1,5 @@
 import AccountContent from "@/components/AccountContent";
+import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import PageHeading from "@/components/PageHeading";
 import SideBar from "@/components/SideBar";

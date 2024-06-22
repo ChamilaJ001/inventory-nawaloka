@@ -29,17 +29,24 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
-import React from "react";
+import React, { useState } from "react";
 import { DataTablePagination } from "@/components/DataTablePagination";
+import { DropdownMenuItem } from "@radix-ui/react-dropdown-menu";
+import { MoreHorizontal } from "lucide-react";
+import { IoTrashOutline } from "react-icons/io5";
+import ShopsDialog from "@/components/ShopsDialog";
+import EditDialog from "@/components/EditDialog";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  setShopData: any;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  setShopData,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -64,6 +71,11 @@ export function DataTable<TData, TValue>({
       columnVisibility,
     },
   });
+
+  const [selectedShop, setSelectedShop] = useState(null);
+  const handleEditClick = (shopData: any) => {
+    setSelectedShop(shopData); // Set the selected shop for edit
+  };
 
   return (
     <div className="px-3">
@@ -141,6 +153,46 @@ export function DataTable<TData, TValue>({
                       )}
                     </TableCell>
                   ))}
+                  <TableCell className="text-right justify-end">
+                    <div className="text-end justify-end flex items-center gap-2 ">
+                      <div
+                        className=""
+                        onClick={() => handleEditClick(row.original)}
+                      >
+                        <EditDialog
+                          selectedShop={selectedShop}
+                          setShopData={setShopData}
+                          shopData={data}
+                        />
+                      </div>
+
+                      <div>
+                        <IoTrashOutline size={17} />
+                      </div>
+
+                      {/* <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button variant="ghost" className="h-8 w-8 p-0 ">
+                            <span className="sr-only">Open menu</span>
+                            <MoreHorizontal className="h-4 w-4" />
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end" className="bg-white">
+                          <DropdownMenuItem className="text-14 flex items-center gap-2 hover:bg-gray-50 cursor-pointer ease-in-out duration-200">
+                            <FiEdit size={16} />
+                            <EditDialog />
+                          </DropdownMenuItem>
+                          <DropdownMenuItem
+                            onClick={() => handleEditClick(row.original)}
+                            className="flex items-center gap-2 hover:bg-gray-50 cursor-pointer ease-in-out duration-200"
+                          >
+                            <IoTrashOutline size={17} />
+                            Delete
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu> */}
+                    </div>
+                  </TableCell>
                 </TableRow>
               ))
             ) : (

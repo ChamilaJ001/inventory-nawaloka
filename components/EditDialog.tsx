@@ -20,13 +20,15 @@ import CustomSelect from "./SelectBox";
 import { BsShop } from "react-icons/bs";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { FiEdit } from "react-icons/fi";
 
 type Prop = {
+  selectedShop?: any;
   shopData?: any;
   setShopData?: any;
 };
 
-const ShopsDialog = ({ shopData, setShopData }: Prop) => {
+const EditDialog = ({ selectedShop, shopData, setShopData }: Prop) => {
   const [loading, setLoading] = useState(false);
 
   const formSchema = shopFormSchema();
@@ -35,46 +37,49 @@ const ShopsDialog = ({ shopData, setShopData }: Prop) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: "",
-      city: "",
-      status: "",
+      name: selectedShop?.shopName,
+      city: selectedShop?.city,
+      status: selectedShop?.status,
     },
   });
 
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
-    setLoading(true);
     console.log(data);
-    const shopName = data.name;
-    const city = data.city;
-    const status = data.status;
-    try {
-      const res = await axios.post("/api/shops", {
-        shopName,
-        city,
-        status,
-      });
+    // setLoading(true);
+    // const id = selectedShop?._id;
+    // const shopName = data.name;
+    // const city = data.city;
+    // const status = data.status;
+    // try {
+    //   const res = await axios.put("/api/shops", {
+    //     id,
+    //     shopName,
+    //     city,
+    //     status,
+    //   });
 
-      console.log(res.status);
-      if (res.status === 400) {
-        toast.error("Shop already created!");
-      }
-      if (res.status === 201) {
-        setShopData([...shopData, res.data]);
-        form.reset();
-        toast.success("Successfully created!");
-      }
-    } catch (error) {
-      console.log(error);
-      toast.error("Faild to create shop!");
-    } finally {
-      setLoading(false);
-    }
+    //   if (res.status === 404) {
+    //     toast.error("Shop not found!");
+    //   }
+    //   if (res.status === 201) {
+    //     setShopData([...shopData, res.data]);
+    //     form.reset();
+    //     toast.success("Successfully updated!");
+    //   }
+    // } catch (error) {
+    //   console.log(error);
+    //   toast.error("Faild to update shop!");
+    // } finally {
+    //   setLoading(false);
+    // }
   };
+
+  //console.log(selectedShop);
 
   return (
     <Dialog>
-      <DialogTrigger className="text-white font-semibold text-14 bg-primary rounded-md px-4 py-3 hover:bg-indigo-500 ease-in-out duration-200">
-        Add new shops
+      <DialogTrigger className="text-14 flex items-center gap-2 hover:bg-gray-50 cursor-pointer ease-in-out duration-200">
+        <FiEdit size={16} />
       </DialogTrigger>
       <DialogContent className="bg-white max-sm:w-[350px] max-sm:rounded-md">
         <DialogHeader className="mt-6 items-start">
@@ -84,7 +89,7 @@ const ShopsDialog = ({ shopData, setShopData }: Prop) => {
               className="bg-primaryLight text-primary p-2 rounded-md"
               size={35}
             />
-            Create New Shops
+            Edit Shops
           </h6>
         </DialogHeader>
 
@@ -99,6 +104,7 @@ const ShopsDialog = ({ shopData, setShopData }: Prop) => {
                 placeholder="Enter shop name"
                 type="text"
                 required={true}
+                defaultValue={selectedShop?.shopName}
               />
               <CustomInput
                 control={form.control}
@@ -108,6 +114,7 @@ const ShopsDialog = ({ shopData, setShopData }: Prop) => {
                 placeholder="Enter city"
                 type="text"
                 required={true}
+                defaultValue={selectedShop?.city}
               />
 
               <CustomSelect
@@ -118,6 +125,7 @@ const ShopsDialog = ({ shopData, setShopData }: Prop) => {
                 placeholder="Select status"
                 options={["Active", "Inactive"]}
                 required={true}
+                value={selectedShop?.status}
               />
 
               <div className="w-full">
@@ -132,7 +140,7 @@ const ShopsDialog = ({ shopData, setShopData }: Prop) => {
                       Loading...
                     </>
                   ) : (
-                    "Create shop"
+                    "Edit shop"
                   )}
                 </Button>
               </div>
@@ -144,4 +152,4 @@ const ShopsDialog = ({ shopData, setShopData }: Prop) => {
   );
 };
 
-export default ShopsDialog;
+export default EditDialog;

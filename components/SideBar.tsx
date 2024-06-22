@@ -14,6 +14,7 @@ import { LuUsers } from "react-icons/lu";
 import { RiExchange2Line } from "react-icons/ri";
 import { IoMdLogOut } from "react-icons/io";
 import { TbSettings } from "react-icons/tb";
+import { signOut } from "next-auth/react";
 
 const SideBar = () => {
   const pathname = usePathname();
@@ -130,7 +131,12 @@ const SideBar = () => {
             </div>
           </div>
 
-          <div className="justify-end">
+          <div
+            className="justify-end hover:bg-white hover:rounded-full p-1 ease-in-out duration-200"
+            onClick={() => {
+              signOut();
+            }}
+          >
             <IoMdLogOut className="text-sky-150" size={25} />
           </div>
         </div>

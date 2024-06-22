@@ -108,7 +108,7 @@ function ProductsForm() {
                   Loading...
                 </>
               ) : (
-                <p className="text-white">Create product</p>
+                "Create product"
               )}
             </Button>
           </div>

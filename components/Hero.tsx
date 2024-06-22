@@ -7,10 +7,19 @@ import DefaultTable from "./DefaultTable";
 import Link from "next/link";
 import ProductsByShop from "./ProductsByShop";
 import { LuUsers } from "react-icons/lu";
-import CountUp from "react-countup";
 import AnimatedCounter from "./AnimatedCounter";
+import { auth } from "@/auth";
+import { getUserByEmail } from "@/lib/data";
+// import { getServerSession } from "next-auth/next";
+// import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
-const Hero = () => {
+const Hero = async () => {
+  // const session = await getServerSession(authOptions);
+  // console.log(session?.user?.name);
+  const session = await auth();
+  // const email = "chamila@gmail.com";
+  // const user = await getUserByEmail(session?.user?.email);
+  // console.log(user);
   return (
     <section className="px-2">
       <div className="grid grid-cols-2 gap-4 max-xl:grid-cols-1">
@@ -26,7 +35,7 @@ const Hero = () => {
 
             <p className="text-18 font-semibold  items-center gap-2">
               Welcome back,{" "}
-              <span className="text-primary"> Chamila Jayasinghe!</span>
+              <span className="text-primary"> {session?.user?.name!}!</span>
             </p>
           </div>
         </div>

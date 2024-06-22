@@ -79,7 +79,7 @@ const PermissionTable = ({ module }: SettingsParams) => {
               type="submit"
               className="font-semibold text-14 bg-primary rounded-md px-4 py-3 hover:bg-indigo-500 ease-in-out duration-200"
             >
-              <p className="text-white">Save</p>
+              Save
             </Button>
           </TableCell>
         </TableRow>

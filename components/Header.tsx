@@ -14,9 +14,10 @@ import {
 import { FiUser } from "react-icons/fi";
 import { IoMdLogOut } from "react-icons/io";
 import { TbSettings } from "react-icons/tb";
-import { Button } from "./ui/button";
+import { signOut, useSession } from "next-auth/react";
 
 const Header = () => {
+  // const { data: session } = useSession();
   return (
     <>
       <div className="header-logo">

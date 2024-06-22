@@ -1,38 +1,37 @@
+"use client";
+
 import Header from "@/components/Header";
 import PageHeading from "@/components/PageHeading";
 import SideBar from "@/components/SideBar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { BsShop } from "react-icons/bs";
-import { ShopsProps, columns } from "./columns";
+import { columns } from "./columns";
 import { DataTable } from "./data-table";
 import ShopsDialog from "@/components/ShopsDialog";
+import axios from "axios";
+import { Loader } from "lucide-react";
 
-const Shops = async () => {
-  async function getData(): Promise<ShopsProps[]> {
-    // Fetch data from your API here.
-    return [
-      {
-        id: "728ed52f",
-        city: "Kurunegala",
-        status: "Active",
-        shopName: "Nawaloka Kurunegala",
-      },
-      {
-        id: "728ed52g",
-        city: "Kandy",
-        status: "Active",
-        shopName: "Nawaloka Kandy",
-      },
-      {
-        id: "728ed52h",
-        city: "Polonnaruwa",
-        status: "Active",
-        shopName: "Nawaloka Polonnaruwa",
-      },
-    ];
-  }
-  const data = await getData();
+const Shops = () => {
+  const [shopData, setShopData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const getShops = async () => {
+      try {
+        const shopsResponse = await axios.get("/api/shops");
+        const shops = shopsResponse.data;
+        setShopData(shops);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    getShops();
+  }, []);
+
   return (
     <section className="home">
       <SideBar />
@@ -46,7 +45,7 @@ const Shops = async () => {
 
           <div className="mt-5">
             <div className="text-end text-white max-w-sm:px-12">
-              <ShopsDialog />
+              <ShopsDialog shopData={shopData} setShopData={setShopData} />
             </div>
 
             <Card className="shadow-lg mt-3">
@@ -63,7 +62,13 @@ const Shops = async () => {
               </CardHeader>
               <CardContent>
                 {/* Tabel */}
-                <DataTable columns={columns} data={data} />
+                {isLoading ? (
+                  <div className="flex justify-center items-center ">
+                    <Loader size={20} className="animate-spin" />
+                  </div>
+                ) : (
+                  <DataTable columns={columns} data={shopData} setShopData={setShopData}/>
+                )}
               </CardContent>
             </Card>
           </div>

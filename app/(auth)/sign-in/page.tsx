@@ -10,16 +10,23 @@ import { authFormSchema } from "@/lib/utils";
 import { Loader2 } from "lucide-react";
 import CustomInput from "@/components/CustomInput";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import { Checkbox } from "@/components/ui/checkbox";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { login } from "@/actions/login";
+import { signIn } from "@/auth";
+import toast from "react-hot-toast";
+import { AuthError } from "next-auth";
 
 const SignIn = () => {
   const [loading, setLoading] = useState(false);
+  const [isPending, startTransition] = useTransition();
+  const router = useRouter();
+  //const { data: session, status: sessionStatus } = useSession();
 
   const formSchema = authFormSchema();
 
-  // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -30,16 +37,39 @@ const SignIn = () => {
 
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
     setLoading(true);
-    console.log(data);
-    try {
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setLoading(false);
-    }
+    const email = data.email;
+    const password = data.password;
+    startTransition(() => {
+      const res = login(data);
+    });
+
+    // try {
+    //   const res = await signIn("credentials", {
+    //     redirect: false,
+    //     email,
+    //     password,
+    //   });
+
+    //   if (res) {
+    //     console.log("success");
+    //     toast.success("Successfully Logged In!");
+    //   }
+    // } catch (error) {
+    //   if (error instanceof AuthError) {
+    //     switch (error.type) {
+    //       case "CredentialsSignin":
+    //         return toast.error("Invalid credentials!");
+    //       default:
+    //         return toast.error("Something went wrong!");
+    //     }
+    //   }
+
+    //   throw error;
+    // }
   };
 
   return (
+    // sessionStatus !== "authenticated" && (
     <section className="flex flex-row min-h-screen justify-center items-center py-12  bg-[#f1f4fc] max-sm:px-3">
       <Card className="p-3 w-[450px] bg-white ">
         <CardHeader className="items-center">
@@ -66,6 +96,7 @@ const SignIn = () => {
                   placeholder="Enter your email"
                   type="text"
                   required={false}
+                  disable={isPending}
                 />
               </div>
 
@@ -78,6 +109,7 @@ const SignIn = () => {
                   placeholder="Enter your password"
                   type="password"
                   required={false}
+                  disable={isPending}
                 />
               </div>
 
@@ -117,6 +149,7 @@ const SignIn = () => {
       </Card>
     </section>
   );
+  // );
 };
 
 export default SignIn;

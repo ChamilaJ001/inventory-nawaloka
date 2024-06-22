@@ -18,6 +18,7 @@ interface CustomSelect {
   placeholder: string;
   options: any;
   required: boolean;
+  value?: string;
 }
 
 const CustomSelect = ({
@@ -28,6 +29,7 @@ const CustomSelect = ({
   placeholder,
   options,
   required,
+  value,
 }: CustomSelect) => {
   return (
     <FormField
@@ -42,7 +44,7 @@ const CustomSelect = ({
             {required && <p className="text-red-500">*</p>}
           </FormLabel>
           <div className="flex w-full flex-col">
-            <Select onValueChange={field.onChange} defaultValue={field.value}>
+            <Select onValueChange={field.onChange} defaultValue={value}>
               <FormControl>
                 <SelectTrigger className=" placeholder:text-gray-500">
                   <SelectValue placeholder={placeholder} />
@@ -54,6 +56,7 @@ const CustomSelect = ({
                     key={i}
                     value={option}
                     className="hover:bg-gray-50 ease-in-out duration-200 cursor-pointer"
+                    defaultValue={value}
                   >
                     {option}
                   </SelectItem>

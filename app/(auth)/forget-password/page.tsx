@@ -111,7 +111,7 @@ const ForgetPassword = () => {
                           Loading...
                         </>
                       ) : (
-                        <p className="text-16">Send code</p>
+                        "Send code"
                       )}
                     </Button>
                     <Link
@@ -174,7 +174,7 @@ const ForgetPassword = () => {
                           Loading...
                         </>
                       ) : (
-                        <p className="text-16">Enter code</p>
+                        "Enter code"
                       )}
                     </Button>
                     <Link

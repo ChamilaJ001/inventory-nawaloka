@@ -81,7 +81,7 @@ const Products = async () => {
               </CardHeader>
               <CardContent>
                 {/* Tabel */}
-                <DataTable columns={columns} data={data} />
+                {/* <DataTable columns={columns} data={data} /> */}
               </CardContent>
             </Card>
           </div>

@@ -94,7 +94,7 @@ const ResetPassword = () => {
                         Loading...
                       </>
                     ) : (
-                      <p className="text-16">Reset Password</p>
+                      "Reset Password"
                     )}
                   </Button>
                   <Link
