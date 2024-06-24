@@ -29,18 +29,25 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
-import React from "react";
+import React, { useState } from "react";
 import { DataTablePagination } from "@/components/DataTablePagination";
+import DeleteAlertBox from "@/components/Reusable/DeleteAlertBox";
+import EditCategory from "@/components/Categories/EditCategory";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  setCategoryData: any;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  setCategoryData,
 }: DataTableProps<TData, TValue>) {
+  const [loading, setLoading] = useState(false);
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -64,6 +71,42 @@ export function DataTable<TData, TValue>({
       columnVisibility,
     },
   });
+
+  const [selectedCategory, setSelectedCategory] = useState(null);
+
+  const handleEditClick = (categoryData: any) => {
+    setSelectedCategory(categoryData);
+  };
+
+  const handleGetId = (id: any) => {
+    setSelectedCategory(id);
+  };
+
+  const handleDelete = async () => {
+    setLoading(true);
+    const id = selectedCategory?._id;
+    try {
+      const res = await axios.delete("/api/categories", {
+        data: { id },
+      });
+      if (res.status === 404) {
+        toast.error("Category not found!");
+      }
+      if (res.status === 200) {
+        const deletedCategory = res.data;
+        const updatedCategoryData = data.filter(
+          (category: any) => category._id !== deletedCategory._id
+        );
+        setCategoryData(updatedCategoryData);
+        toast.success("Successfully deleted!");
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("Faild to delete category!");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="px-3">
@@ -139,6 +182,24 @@ export function DataTable<TData, TValue>({
                       )}
                     </TableCell>
                   ))}
+                  <TableCell className="text-right justify-end">
+                    <div className="text-end justify-end flex items-center gap-2 ">
+                      <div
+                        className=""
+                        onClick={() => handleEditClick(row.original)}
+                      >
+                        <EditCategory
+                          selectedCategory={selectedCategory}
+                          setCategoryData={setCategoryData}
+                          categoryData={data}
+                        />
+                      </div>
+
+                      <div onClick={() => handleGetId(row.original)}>
+                        <DeleteAlertBox handleDelete={handleDelete} />
+                      </div>
+                    </div>
+                  </TableCell>
                 </TableRow>
               ))
             ) : (

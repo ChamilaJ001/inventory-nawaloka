@@ -1,38 +1,37 @@
+"use client";
+
 import Header from "@/components/Header";
 import PageHeading from "@/components/PageHeading";
 import SideBar from "@/components/SideBar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import React from "react";
+import { useEffect, useState } from "react";
 import { BiCategoryAlt } from "react-icons/bi";
 import { CategoriesProps, columns } from "./columns";
 import { DataTable } from "./data-table";
-import CategoryDialog from "@/components/CategoryDialog";
+import CategoryDialog from "@/components/Categories/CategoryDialog";
+import axios from "axios";
+import { Loader } from "lucide-react";
 
-const Categories = async () => {
-  async function getData(): Promise<CategoriesProps[]> {
-    // Fetch data from your API here.
-    return [
-      {
-        id: "728ed52f",
-        code: "674839",
-        status: "Active",
-        name: "Sunglasses",
-      },
-      {
-        id: "728ed52g",
-        code: "537825",
-        status: "Active",
-        name: "Glass Frames",
-      },
-      {
-        id: "728ed52h",
-        code: "482292",
-        status: "Active",
-        name: "Reading Glasses",
-      },
-    ];
-  }
-  const data = await getData();
+const Categories = () => {
+  const [categoryData, setCategoryData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const getCategories = async () => {
+      try {
+        const categoriesResponse = await axios.get("/api/categories");
+        const categories = categoriesResponse.data;
+        setCategoryData(categories);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    getCategories();
+  }, []);
+
   return (
     <section className="home">
       <SideBar />
@@ -46,7 +45,10 @@ const Categories = async () => {
 
           <div className="mt-5">
             <div className="text-end text-white max-w-sm:px-12">
-              <CategoryDialog />
+              <CategoryDialog
+                categoryData={categoryData}
+                setCategoryData={setCategoryData}
+              />
             </div>
 
             <Card className="shadow-lg mt-3">
@@ -63,7 +65,17 @@ const Categories = async () => {
               </CardHeader>
               <CardContent>
                 {/* Tabel */}
-                {/* <DataTable columns={columns} data={data} /> */}
+                {isLoading ? (
+                  <div className="flex justify-center items-center ">
+                    <Loader size={20} className="animate-spin" />
+                  </div>
+                ) : (
+                  <DataTable
+                    columns={columns}
+                    data={categoryData}
+                    setCategoryData={setCategoryData}
+                  />
+                )}
               </CardContent>
             </Card>
           </div>

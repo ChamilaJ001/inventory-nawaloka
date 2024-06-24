@@ -44,7 +44,6 @@ const ShopsDialog = ({ shopData, setShopData }: Prop) => {
 
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
     setLoading(true);
-    console.log(data);
     const shopName = data.name;
     const city = data.city;
     const status = data.status;
@@ -55,7 +54,6 @@ const ShopsDialog = ({ shopData, setShopData }: Prop) => {
         status,
       });
 
-      console.log(res.status);
       if (res.status === 400) {
         toast.error("Shop already created!");
       }
@@ -131,7 +129,7 @@ const ShopsDialog = ({ shopData, setShopData }: Prop) => {
                   {loading ? (
                     <>
                       <Loader2 size={20} className="animate-spin" /> &nbsp;
-                      Loading...
+                      Creating...
                     </>
                   ) : (
                     "Create shop"

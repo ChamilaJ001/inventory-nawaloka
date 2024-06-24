@@ -74,7 +74,6 @@ export function DataTable<TData, TValue>({
   });
 
   const [selectedShop, setSelectedShop] = useState(null);
-  //const [selectedId, setSelectedId] = useState(null);
 
   const handleEditClick = (shopData: any) => {
     setSelectedShop(shopData);

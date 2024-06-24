@@ -11,7 +11,7 @@ import { Form } from "@/components/ui/form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { shopFormSchema } from "@/lib/utils";
+import { categoryFormSchema, shopFormSchema } from "@/lib/utils";
 import { Loader2 } from "lucide-react";
 import CustomInput from "@/components/CustomInput";
 import { useEffect, useState } from "react";
@@ -22,67 +22,71 @@ import toast from "react-hot-toast";
 import { FiEdit } from "react-icons/fi";
 
 type Prop = {
-  selectedShop?: any;
-  shopData?: any;
-  setShopData?: any;
+  selectedCategory?: any;
+  categoryData?: any;
+  setCategoryData?: any;
 };
 
 const wait = () => new Promise((resolve) => setTimeout(resolve, 500));
 
-const EditDialog = ({ selectedShop, shopData, setShopData }: Prop) => {
+const EditCategory = ({
+  selectedCategory,
+  categoryData,
+  setCategoryData,
+}: Prop) => {
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
 
-  const formSchema: any = shopFormSchema();
+  const formSchema: any = categoryFormSchema();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: selectedShop?.shopName || "",
-      city: selectedShop?.city || "",
-      status: selectedShop?.status || "",
+      name: selectedCategory?.name || "",
+      code: selectedCategory?.code || "",
+      status: selectedCategory?.status || "",
     },
   });
 
   useEffect(() => {
     form.reset({
-      name: selectedShop?.shopName || "",
-      city: selectedShop?.city || "",
-      status: selectedShop?.status || "",
+      name: selectedCategory?.name || "",
+      code: selectedCategory?.code || "",
+      status: selectedCategory?.status || "",
     });
-  }, [selectedShop, form]);
+  }, [selectedCategory, form]);
 
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
     setLoading(true);
-    const id = selectedShop?._id;
-    const shopName = data.name;
-    const city = data.city;
+    const id = selectedCategory?._id;
+    const name = data.name;
+    const code = data.code;
     const status = data.status;
     try {
-      const res = await axios.put("/api/shops", {
+      const res = await axios.put("/api/categories", {
         id,
-        shopName,
-        city,
+        name,
+        code,
         status,
       });
 
       if (res.status === 404) {
-        toast.error("Shop not found!");
+        toast.error("Category not found!");
       }
       if (res.status === 201) {
-        const updatedShop = res.data;
-        const updatedShopData = shopData.map((shop: any) =>
-          shop._id === updatedShop._id ? updatedShop : shop
+        const updatedCategory = res.data;
+        const updatedCategoryData = categoryData.map((category: any) =>
+          category._id === updatedCategory._id ? updatedCategory : category
         );
 
-        setShopData(updatedShopData);
+        setCategoryData(updatedCategoryData);
         wait().then(() => setOpen(false));
         form.reset();
         toast.success("Successfully updated!");
       }
     } catch (error) {
       console.log(error);
-      toast.error("Faild to update shop!");
+      toast.error("Faild to update category!");
     } finally {
       setLoading(false);
     }
@@ -104,7 +108,7 @@ const EditDialog = ({ selectedShop, shopData, setShopData }: Prop) => {
               className="bg-primaryLight text-primary p-2 rounded-md"
               size={35}
             />
-            Edit Shops
+            Edit Categories
           </h6>
         </DialogHeader>
 
@@ -114,22 +118,22 @@ const EditDialog = ({ selectedShop, shopData, setShopData }: Prop) => {
               <CustomInput
                 control={form.control}
                 name="name"
-                label="Shop Name"
+                label="Category Name"
                 formSchema={formSchema}
-                placeholder="Enter shop name"
+                placeholder="Enter category name"
                 type="text"
                 required={true}
-                defaultValue={selectedShop?.shopName}
+                defaultValue={selectedCategory?.name}
               />
               <CustomInput
                 control={form.control}
-                name="city"
-                label="City"
+                name="code"
+                label="Code"
                 formSchema={formSchema}
-                placeholder="Enter city"
+                placeholder="Enter code"
                 type="text"
                 required={true}
-                defaultValue={selectedShop?.city}
+                defaultValue={selectedCategory?.code}
               />
 
               <CustomSelect
@@ -140,7 +144,7 @@ const EditDialog = ({ selectedShop, shopData, setShopData }: Prop) => {
                 placeholder="Select status"
                 options={["Active", "Inactive"]}
                 required={true}
-                value={selectedShop?.status}
+                value={selectedCategory?.status}
               />
 
               <div className="w-full">
@@ -155,7 +159,7 @@ const EditDialog = ({ selectedShop, shopData, setShopData }: Prop) => {
                       Updating...
                     </>
                   ) : (
-                    "Edit shop"
+                    "Edit category"
                   )}
                 </Button>
               </div>
@@ -167,4 +171,4 @@ const EditDialog = ({ selectedShop, shopData, setShopData }: Prop) => {
   );
 };
 
-export default EditDialog;
+export default EditCategory;
