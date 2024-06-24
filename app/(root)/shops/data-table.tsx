@@ -43,6 +43,13 @@ interface DataTableProps<TData, TValue> {
   setShopData: any;
 }
 
+interface Shop {
+  _id: string;
+  name: string;
+  city: string;
+  status: string;
+}
+
 export function DataTable<TData, TValue>({
   columns,
   data,
@@ -73,7 +80,7 @@ export function DataTable<TData, TValue>({
     },
   });
 
-  const [selectedShop, setSelectedShop] = useState(null);
+  const [selectedShop, setSelectedShop] = useState<Shop | null>(null);
 
   const handleEditClick = (shopData: any) => {
     setSelectedShop(shopData);

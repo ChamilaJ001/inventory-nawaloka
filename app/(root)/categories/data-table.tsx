@@ -42,6 +42,13 @@ interface DataTableProps<TData, TValue> {
   setCategoryData: any;
 }
 
+interface Category {
+  _id: string;
+  name: string;
+  code: string;
+  status: string;
+}
+
 export function DataTable<TData, TValue>({
   columns,
   data,
@@ -72,7 +79,9 @@ export function DataTable<TData, TValue>({
     },
   });
 
-  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState<Category | null>(
+    null
+  );
 
   const handleEditClick = (categoryData: any) => {
     setSelectedCategory(categoryData);
