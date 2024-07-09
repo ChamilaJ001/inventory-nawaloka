@@ -1,22 +1,14 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { MoreHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { ArrowUpDown } from "lucide-react";
 import { FiEdit } from "react-icons/fi";
-import { IoTrashOutline } from "react-icons/io5";
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
-export type ProductsProps = {
-  id: string;
+type ProductsProps = {
+  _id: string;
   code: string;
   name: string;
   category: string;

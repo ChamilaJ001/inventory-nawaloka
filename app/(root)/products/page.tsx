@@ -6,7 +6,7 @@ import SideBar from "@/components/SideBar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import React from "react";
 import { FaCartShopping } from "react-icons/fa6";
-import { ProductsProps, columns } from "./columns";
+import { columns } from "./columns";
 import { DataTable } from "./data-table";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
