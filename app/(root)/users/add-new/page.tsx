@@ -5,7 +5,7 @@ import Link from "next/link";
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { LuUsers } from "react-icons/lu";
-import ProductsForm from "@/components/ProductsForm";
+import ProductsForm from "@/components/Products/ProductsForm";
 import UsersForm from "@/components/UsersForm";
 
 const AddNewProduct = () => {

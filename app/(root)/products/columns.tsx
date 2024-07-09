@@ -21,7 +21,7 @@ export type ProductsProps = {
   name: string;
   category: string;
   shop: string;
-  qty: number;
+  quantity: number;
   status: string;
 };
 
@@ -73,56 +73,56 @@ export const columns: ColumnDef<ProductsProps>[] = [
     accessorKey: "qty",
     header: () => <div className="font-semibold">Quantity</div>,
     cell: ({ row }) => {
-      const qty: number = parseFloat(row.getValue("qty"));
-      return <div className="text-15">{qty}</div>;
+      const quantity = parseInt(row.getValue("qty"));
+      return <div className="text-15">{quantity}</div>;
     },
   },
   {
     accessorKey: "status",
     header: () => <div className="font-semibold text-center">Status</div>,
     cell: ({ row }) => {
-      const qty: number = parseFloat(row.getValue("qty"));
+      const quantity = parseInt(row.getValue("qty"));
       return (
         <div
           className={`${
-            qty > 0
+            quantity > 0
               ? "bg-success-100 text-success-150"
               : "bg-orange-100 text-orange-150"
           }  text-center p-1 rounded-md font-semibold max-lg:font-normal tex-15`}
         >
-          {qty > 0 ? "In stock" : "Out of stock"}
+          {quantity > 0 ? "In stock" : "Out of stock"}
         </div>
       );
     },
   },
 
-  {
-    id: "actions",
-    cell: ({ row }) => {
-      const payment = row.original;
+  // {
+  //   id: "actions",
+  //   cell: ({ row }) => {
+  //     const payment = row.original;
 
-      return (
-        <div className="text-right">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="h-8 w-8 p-0 ">
-                <span className="sr-only">Open menu</span>
-                <MoreHorizontal className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="bg-white">
-              <DropdownMenuItem className="text-14 flex items-center gap-2 hover:bg-gray-50 cursor-pointer ease-in-out duration-200">
-                <FiEdit size={16} />
-                Edit
-              </DropdownMenuItem>
-              <DropdownMenuItem className="flex items-center gap-2 hover:bg-gray-50 cursor-pointer ease-in-out duration-200">
-                <IoTrashOutline size={17} />
-                Delete
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
-      );
-    },
-  },
+  //     return (
+  //       <div className="text-right">
+  //         <DropdownMenu>
+  //           <DropdownMenuTrigger asChild>
+  //             <Button variant="ghost" className="h-8 w-8 p-0 ">
+  //               <span className="sr-only">Open menu</span>
+  //               <MoreHorizontal className="h-4 w-4" />
+  //             </Button>
+  //           </DropdownMenuTrigger>
+  //           <DropdownMenuContent align="end" className="bg-white">
+  //             <DropdownMenuItem className="text-14 flex items-center gap-2 hover:bg-gray-50 cursor-pointer ease-in-out duration-200">
+  //               <FiEdit size={16} />
+  //               Edit
+  //             </DropdownMenuItem>
+  //             <DropdownMenuItem className="flex items-center gap-2 hover:bg-gray-50 cursor-pointer ease-in-out duration-200">
+  //               <IoTrashOutline size={17} />
+  //               Delete
+  //             </DropdownMenuItem>
+  //           </DropdownMenuContent>
+  //         </DropdownMenu>
+  //       </div>
+  //     );
+  //   },
+  // },
 ];

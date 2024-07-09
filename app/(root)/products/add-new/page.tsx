@@ -5,7 +5,7 @@ import Link from "next/link";
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { FaCartShopping } from "react-icons/fa6";
-import ProductsForm from "@/components/ProductsForm";
+import ProductsForm from "@/components/Products/ProductsForm";
 
 const AddNewProduct = () => {
   return (

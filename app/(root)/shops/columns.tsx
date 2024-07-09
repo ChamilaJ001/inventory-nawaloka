@@ -70,37 +70,4 @@ export const columns: ColumnDef<ShopsProps>[] = [
       );
     },
   },
-
-  // {
-  //   id: "actions",
-  //   cell: ({ row }) => {
-  //     const payment = row.original;
-
-  //     return (
-  //       <div className="text-right">
-  //         <DropdownMenu>
-  //           <DropdownMenuTrigger asChild>
-  //             <Button variant="ghost" className="h-8 w-8 p-0 ">
-  //               <span className="sr-only">Open menu</span>
-  //               <MoreHorizontal className="h-4 w-4" />
-  //             </Button>
-  //           </DropdownMenuTrigger>
-  //           <DropdownMenuContent align="end" className="bg-white">
-  //             <DropdownMenuItem className="text-14 flex items-center gap-2 hover:bg-gray-50 cursor-pointer ease-in-out duration-200">
-  //               <FiEdit size={16} />
-  //               Edit
-  //             </DropdownMenuItem>
-  //             <DropdownMenuItem
-  //               onClick={() => handleEditClick(row.original)}
-  //               className="flex items-center gap-2 hover:bg-gray-50 cursor-pointer ease-in-out duration-200"
-  //             >
-  //               <IoTrashOutline size={17} />
-  //               Delete
-  //             </DropdownMenuItem>
-  //           </DropdownMenuContent>
-  //         </DropdownMenu>
-  //       </div>
-  //     );
-  //   },
-  // },
 ];

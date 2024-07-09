@@ -35,6 +35,20 @@ declare type SignUpParams = {
   password: string;
 };
 
+interface Product {
+  _id: string;
+  name: string;
+  code: string;
+  category: string;
+  shop: string;
+  price: number;
+  qty: number;
+  status: string;
+  is_delete: string;
+  categoryName?: string;
+  shopName?: string;
+}
+
 declare type LoginUser = {
   email: string;
   password: string;

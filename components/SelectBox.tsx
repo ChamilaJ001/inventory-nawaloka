@@ -19,6 +19,7 @@ interface CustomSelect {
   options: any;
   required: boolean;
   value?: string;
+  idValue?: string[];
 }
 
 const CustomSelect = ({
@@ -28,9 +29,13 @@ const CustomSelect = ({
   formSchema,
   placeholder,
   options,
+  idValue,
   required,
   value,
 }: CustomSelect) => {
+  // const idVal = idValue?.map((id: string) => {
+  //   return id;
+  // });
   return (
     <FormField
       control={control}
@@ -46,7 +51,10 @@ const CustomSelect = ({
           <div className="flex w-full flex-col">
             <Select onValueChange={field.onChange} defaultValue={value}>
               <FormControl>
-                <SelectTrigger className=" placeholder:text-gray-500">
+                <SelectTrigger
+                  className=" placeholder:text-gray-500"
+                  defaultValue={value}
+                >
                   <SelectValue placeholder={placeholder} />
                 </SelectTrigger>
               </FormControl>
@@ -54,9 +62,8 @@ const CustomSelect = ({
                 {options.map((option: any, i: number) => (
                   <SelectItem
                     key={i}
-                    value={option}
+                    value={idValue ? idValue[i] : option}
                     className="hover:bg-gray-50 ease-in-out duration-200 cursor-pointer"
-                    defaultValue={value}
                   >
                     {option}
                   </SelectItem>

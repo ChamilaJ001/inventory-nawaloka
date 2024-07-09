@@ -6,14 +6,11 @@ import SideBar from "@/components/SideBar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import React from "react";
 import { FaCartShopping } from "react-icons/fa6";
-import { ProductsProps, columns } from "./columns";
-import { DataTable } from "./data-table";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
 import { useProducts } from "@/context/ProductsContext";
-import { Loader } from "lucide-react";
+import EditProducts from "@/components/Products/EditProducts";
 
-const Products = () => {
+const EditProds = () => {
   const { loading, products } = useProducts();
 
   return (
@@ -30,14 +27,11 @@ const Products = () => {
           <div className="mt-8">
             <div className="flex items-center justify-end gap-2 text-white max-w-sm:px-12">
               <Link
-                href={"/products/add-new"}
+                href={"/products"}
                 className="text-white font-semibold text-14 bg-primary rounded-md px-4 py-3 hover:bg-indigo-500 ease-in-out duration-200"
               >
-                Add new products
+                Back to list
               </Link>
-              <Button className="text-white font-semibold text-14 bg-success-150 rounded-md px-4 pt-[22px] pb-[22px] hover:bg-success-200 ease-in-out duration-200">
-                Export CSV
-              </Button>
             </div>
 
             <Card className="shadow-lg mt-5">
@@ -48,19 +42,12 @@ const Products = () => {
                       className="bg-primaryLight text-primary p-2 rounded-md"
                       size={35}
                     />
-                    Product Details
+                    Edit Products
                   </div>
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                {/* Tabel */}
-                {loading ? (
-                  <div className="flex justify-center items-center ">
-                    <Loader size={20} className="animate-spin" />
-                  </div>
-                ) : (
-                  <DataTable columns={columns} data={products} />
-                )}
+                <EditProducts />
               </CardContent>
             </Card>
           </div>
@@ -70,4 +57,4 @@ const Products = () => {
   );
 };
 
-export default Products;
+export default EditProds;

@@ -8,8 +8,8 @@ export const POST = async (req: NextRequest) => {
   const is_delete = 0;
 
   await connectDB();
-  const existingCity = await Shop.findOne({ shopName });
-  if (existingCity) {
+  const existingShop = await Shop.findOne({ shopName });
+  if (existingShop) {
     return new NextResponse(JSON.stringify({ error: "Shop already exixts" }), {
       status: 400,
     });
@@ -54,6 +54,16 @@ export const PUT = async (req: NextRequest) => {
 
   await connectDB();
   try {
+    const existingShop = await Shop.findOne({ shopName });
+    if (existingShop) {
+      return new NextResponse(
+        JSON.stringify({ error: "Shop already exixts with this name" }),
+        {
+          status: 400,
+        }
+      );
+    }
+
     const updatedShop = await Shop.findByIdAndUpdate(id, data, {
       new: true,
     });

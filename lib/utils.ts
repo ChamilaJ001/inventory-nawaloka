@@ -243,9 +243,15 @@ export const productsFormSchema = () =>
     code: z.string().nonempty("Code is required"),
     category: z.string().nonempty("Category is required"),
     shop: z.string().nonempty("Shop is required"),
+    price: z
+      .string()
+      .nonempty("Price is required")
+      .transform((val) => parseFloat(val))
+      .refine((val) => !isNaN(val), "Price must be a number"),
     quantity: z
       .string()
-      .transform((val) => Number(val))
+      .nonempty("Quantity is required")
+      .transform((val) => parseInt(val, 10))
       .refine((val) => !isNaN(val), "Quantity must be a number"),
   });
 

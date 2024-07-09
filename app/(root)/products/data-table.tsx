@@ -29,8 +29,12 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { DataTablePagination } from "@/components/DataTablePagination";
+import { FiEdit } from "react-icons/fi";
+import { useRouter } from "next/navigation";
+import DeleteAlertBox from "@/components/Reusable/DeleteAlertBox";
+import { useProducts } from "@/context/ProductsContext";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -64,6 +68,39 @@ export function DataTable<TData, TValue>({
       columnVisibility,
     },
   });
+
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [selectedProductDelete, setSelectedProductDelete] =
+    useState<Product | null>(null);
+  const router = useRouter();
+
+  const { deleteProduct } = useProducts();
+
+  const handleEditClick = (productData: any) => {
+    setSelectedProduct(productData);
+    console.log(selectedProduct?.name);
+  };
+
+  useEffect(() => {
+    if (selectedProduct) {
+      router.push(`/products/${selectedProduct._id}`);
+    }
+  }, [selectedProduct, router]);
+
+  const handleGetId = (id: any) => {
+    setSelectedProductDelete(id);
+  };
+
+  const handleDelete = async () => {
+    const id = selectedProductDelete?._id;
+    try {
+      if (id) {
+        deleteProduct(id);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div className="px-3">
@@ -148,6 +185,20 @@ export function DataTable<TData, TValue>({
                       )}
                     </TableCell>
                   ))}
+                  <TableCell className="text-right justify-end">
+                    <div className="text-end justify-end flex items-center gap-2 ">
+                      <div
+                        className="cursor-pointer"
+                        onClick={() => handleEditClick(row.original)}
+                      >
+                        <FiEdit size={16} />
+                      </div>
+
+                      <div onClick={() => handleGetId(row.original)}>
+                        <DeleteAlertBox handleDelete={handleDelete} />
+                      </div>
+                    </div>
+                  </TableCell>
                 </TableRow>
               ))
             ) : (

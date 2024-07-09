@@ -1,7 +1,7 @@
 "use client";
 
-import React from "react";
-import { Button } from "./ui/button";
+import React, { useEffect } from "react";
+import { Button } from "../ui/button";
 import { Form } from "@/components/ui/form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -10,14 +10,58 @@ import { productsFormSchema } from "@/lib/utils";
 import { Loader2 } from "lucide-react";
 import CustomInput from "@/components/CustomInput";
 import { useState } from "react";
-import CustomSelect from "./SelectBox";
+import CustomSelect from "../SelectBox";
+import { useProducts } from "@/context/ProductsContext";
+import axios from "axios";
 
 function ProductsForm() {
-  const [loading, setLoading] = useState(false);
+  const { createProduct, loading } = useProducts();
+  const [isLoading, setIsLoading] = useState(false);
+  const [category, setCategory] = useState<string[]>([]);
+  const [shop, setShop] = useState<string[]>([]);
+
+  useEffect(() => {
+    const getCategories = async () => {
+      try {
+        const categoriesResponse = await axios.get("/api/categories");
+        const categories = categoriesResponse.data;
+        setCategory(categories);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    getCategories();
+  }, []);
+
+  const categoriesSelect = category?.map((cat: any) => {
+    return { name: cat.name, id: cat._id };
+  });
+
+  useEffect(() => {
+    const getShops = async () => {
+      try {
+        const shopsResponse = await axios.get("/api/shops");
+        const shops = shopsResponse.data;
+        setShop(shops);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    getShops();
+  }, []);
+
+  const shopsSelect = shop?.map((sh: any) => {
+    return { name: sh.shopName, id: sh._id };
+  });
 
   const formSchema = productsFormSchema();
 
-  // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -25,18 +69,16 @@ function ProductsForm() {
       code: "",
       category: "",
       shop: "",
+      price: 0,
       quantity: 0,
     },
   });
 
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
-    setLoading(true);
-    console.log(data);
     try {
+      createProduct(data);
     } catch (error) {
       console.log(error);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -72,7 +114,8 @@ function ProductsForm() {
               formSchema={formSchema}
               label="Category"
               placeholder="Select category"
-              options={["Sunglasses", "Glass Frames"]}
+              options={categoriesSelect.map((cat) => cat.name)}
+              idValue={categoriesSelect.map((cat) => cat.id)}
               required={true}
             />
             <CustomSelect
@@ -81,11 +124,22 @@ function ProductsForm() {
               formSchema={formSchema}
               label="Shop"
               placeholder="Select shop"
-              options={["Kurunegala", "Kandy", "Polonnaruwa"]}
+              options={shopsSelect.map((sh) => sh.name)}
+              idValue={shopsSelect.map((sh) => sh.id)}
               required={true}
             />
           </div>
           <div className="grid grid-cols-2 gap-3 max-sm:grid-cols-1">
+            <CustomInput
+              control={form.control}
+              name="price"
+              label="Price"
+              formSchema={formSchema}
+              placeholder="Enter product price"
+              type="number"
+              required={true}
+            />
+
             <CustomInput
               control={form.control}
               name="quantity"
@@ -99,13 +153,13 @@ function ProductsForm() {
           <div className="w-full">
             <Button
               type="submit"
-              className="text-white font-semibold text-15"
-              disabled={loading}
+              className="text-16 rounded-lg border border-primary bg-primary font-semibold text-white"
+              disabled={isLoading}
             >
               {loading ? (
                 <>
                   <Loader2 size={20} className="animate-spin" /> &nbsp;
-                  Loading...
+                  Creating...
                 </>
               ) : (
                 "Create product"
