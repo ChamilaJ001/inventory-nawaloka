@@ -51,10 +51,7 @@ const CustomSelect = ({
           <div className="flex w-full flex-col">
             <Select onValueChange={field.onChange} defaultValue={value}>
               <FormControl>
-                <SelectTrigger
-                  className=" placeholder:text-gray-500"
-                  defaultValue={value}
-                >
+                <SelectTrigger className=" placeholder:text-gray-500">
                   <SelectValue placeholder={placeholder} />
                 </SelectTrigger>
               </FormControl>

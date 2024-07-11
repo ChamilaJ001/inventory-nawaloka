@@ -14,6 +14,7 @@ interface Shop {
   _id: ObjectId;
   shopName: string;
 }
+
 //Insert
 export const POST = async (req: NextRequest) => {
   const { name, code, category, shop, price, quantity } = await req.json();

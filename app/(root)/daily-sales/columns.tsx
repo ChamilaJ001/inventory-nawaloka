@@ -16,14 +16,14 @@ import { IoTrashOutline } from "react-icons/io5";
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 export type SalesProps = {
-  id: string;
+  _id: string;
   invoice: string;
   code: string;
-  name: string;
+  products: [];
   shop: string;
   qty: number;
   total: number;
-  payment: string;
+  status: string;
   date: string;
 };
 
@@ -48,22 +48,6 @@ export const columns: ColumnDef<SalesProps>[] = [
     },
   },
   {
-    accessorKey: "code",
-    header: () => <div className="font-semibold">Product Code</div>,
-    cell: ({ row }) => {
-      const code: string = row.getValue("code");
-      return <div className="text-15">{code}</div>;
-    },
-  },
-  {
-    accessorKey: "name",
-    header: () => <div className="font-semibold">Product Name</div>,
-    cell: ({ row }) => {
-      const name: string = row.getValue("name");
-      return <div className="text-15">{name}</div>;
-    },
-  },
-  {
     accessorKey: "shop",
     header: () => <div className="font-semibold">Shop</div>,
     cell: ({ row }) => {
@@ -72,26 +56,20 @@ export const columns: ColumnDef<SalesProps>[] = [
     },
   },
   {
-    accessorKey: "qty",
-    header: () => <div className="font-semibold">Quantity</div>,
-    cell: ({ row }) => {
-      const qty: number = parseFloat(row.getValue("qty"));
-      return <div className="text-15 text-center">{qty}</div>;
-    },
-  },
-  {
     accessorKey: "total",
-    header: () => <div className="font-semibold">Total</div>,
+    header: () => <div className="font-semibold">Total Amount</div>,
     cell: ({ row }) => {
       const total: number = parseFloat(row.getValue("total"));
       return <div className="text-15">{total}</div>;
     },
   },
   {
-    accessorKey: "payment",
-    header: () => <div className="font-semibold text-center">Status</div>,
+    accessorKey: "status",
+    header: () => (
+      <div className="font-semibold text-center">Payment Status</div>
+    ),
     cell: ({ row }) => {
-      const payment: string = row.getValue("payment");
+      const payment: string = row.getValue("status");
       return (
         <div
           className={`${
@@ -106,41 +84,11 @@ export const columns: ColumnDef<SalesProps>[] = [
     },
   },
   {
-    accessorKey: "date",
+    accessorKey: "createdAt",
     header: () => <div className="font-semibold">Date</div>,
     cell: ({ row }) => {
-      const date: string = row.getValue("date");
+      const date: string = row.getValue("createdAt");
       return <div className="text-15">{date}</div>;
-    },
-  },
-
-  {
-    id: "actions",
-    cell: ({ row }) => {
-      const payment = row.original;
-
-      return (
-        <div className="text-right">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="h-8 w-8 p-0 ">
-                <span className="sr-only">Open menu</span>
-                <MoreHorizontal className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="bg-white">
-              <DropdownMenuItem className="text-14 flex items-center gap-2 hover:bg-gray-50 cursor-pointer ease-in-out duration-200">
-                <FiEdit size={16} />
-                Edit
-              </DropdownMenuItem>
-              <DropdownMenuItem className="flex items-center gap-2 hover:bg-gray-50 cursor-pointer ease-in-out duration-200">
-                <IoTrashOutline size={17} />
-                Delete
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
-      );
     },
   },
 ];

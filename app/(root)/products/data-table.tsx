@@ -78,7 +78,6 @@ export function DataTable<TData, TValue>({
 
   const handleEditClick = (productData: any) => {
     setSelectedProduct(productData);
-    console.log(selectedProduct?.name);
   };
 
   useEffect(() => {

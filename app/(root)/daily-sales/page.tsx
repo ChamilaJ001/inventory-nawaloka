@@ -1,3 +1,5 @@
+"use client";
+
 import Header from "@/components/Header";
 import PageHeading from "@/components/PageHeading";
 import SideBar from "@/components/SideBar";
@@ -8,47 +10,13 @@ import { SalesProps, columns } from "./columns";
 import { DataTable } from "./data-table";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { useProducts } from "@/context/ProductsContext";
+import { Loader } from "lucide-react";
+import { useSales } from "@/context/SaleContext";
 
-const DailySales = async () => {
-  async function getData(): Promise<SalesProps[]> {
-    // Fetch data from your API here.
-    return [
-      {
-        id: "728ed52f",
-        code: "P74839",
-        invoice: "I37282",
-        name: "Ray ban sunglass",
-        shop: "Kurunegala",
-        qty: 1,
-        total: 2500,
-        payment: "Success",
-        date: "2024-05-23",
-      },
-      {
-        id: "728ed52g",
-        code: "P74839",
-        invoice: "I37282",
-        name: "Horizan Frame",
-        shop: "Kandy",
-        qty: 2,
-        total: 15500,
-        payment: "Success",
-        date: "2024-05-20",
-      },
-      {
-        id: "728ed52h",
-        code: "P83047",
-        invoice: "I53456",
-        name: "Kritz sunglasses",
-        shop: "Polonnaruwa",
-        qty: 1,
-        total: 4500,
-        payment: "Success",
-        date: "2024-05-15",
-      },
-    ];
-  }
-  const data = await getData();
+const DailySales = () => {
+  const { loading, sales } = useSales();
+  console.log(sales);
   return (
     <section className="home">
       <SideBar />
@@ -87,7 +55,13 @@ const DailySales = async () => {
               </CardHeader>
               <CardContent>
                 {/* Tabel */}
-                <DataTable columns={columns} data={data} />
+                {loading ? (
+                  <div className="flex justify-center items-center ">
+                    <Loader size={20} className="animate-spin" />
+                  </div>
+                ) : (
+                  <DataTable columns={columns} data={sales} />
+                )}
               </CardContent>
             </Card>
           </div>

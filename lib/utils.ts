@@ -268,15 +268,27 @@ export const userFormSchema = () =>
 export const salesFormSchema = () =>
   z.object({
     invoice: z.string().nonempty("Invoice number is required"),
-    quantity: z
-      .string()
-      .transform((val) => Number(val))
-      .refine((val) => !isNaN(val), "Quantity must be a number"),
     total: z
       .string()
-      .transform((val) => Number(val))
+      .nonempty("Total is required")
+      .transform((val) => parseFloat(val))
       .refine((val) => !isNaN(val), "Total must be a number"),
     status: z.string().nonempty("Status is required"),
+    products: z.array(
+      z.object({
+        productId: z.string(),
+        code: z.string(),
+        name: z.string(),
+        existingQuantity: z.number(),
+        saleQuantity: z
+          .string()
+          .min(1, "Sale quantity must be greater than 0")
+          .nonempty("Quantity is required")
+          .transform((val) => parseInt(val, 10))
+          .refine((val) => !isNaN(val), "Quantity must be a number"),
+      })
+    ),
+    shop: z.string().nonempty("Shop is required"),
   });
 
 export const accountFormSchema = () =>

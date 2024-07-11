@@ -1,31 +1,42 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { MoreHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { ArrowUpDown } from "lucide-react";
-import { FiEdit } from "react-icons/fi";
-import SalesDialog from "@/components/SalesDialog ";
+import { Checkbox } from "@/components/ui/checkbox";
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 export type ProductsProps = {
-  id: string;
+  _id: string;
   code: string;
   name: string;
   category: string;
   shop: string;
-  qty: number;
+  qty?: number;
   status: string;
 };
 
 export const columns: ColumnDef<ProductsProps>[] = [
+  {
+    id: "select",
+    header: ({ table }) => (
+      <Checkbox
+        checked={table.getIsAllPageRowsSelected()}
+        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+        aria-label="Select all"
+      />
+    ),
+    cell: ({ row }) => (
+      <Checkbox
+        checked={row.getIsSelected()}
+        onCheckedChange={(value) => row.toggleSelected(!!value)}
+        aria-label="Select row"
+      />
+    ),
+    enableSorting: false,
+    enableHiding: false,
+  },
   {
     accessorKey: "code",
     header: ({ column }) => {
@@ -96,28 +107,28 @@ export const columns: ColumnDef<ProductsProps>[] = [
     },
   },
 
-  {
-    id: "actions",
-    cell: ({ row }) => {
-      const payment = row.original;
+  // {
+  //   id: "actions",
+  //   cell: ({ row }) => {
+  //     const payment = row.original;
 
-      return (
-        <div className="text-right">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="h-8 w-8 p-0 ">
-                <span className="sr-only">Open menu</span>
-                <SalesDialog />
-              </Button>
-            </DropdownMenuTrigger>
-            {/* <DropdownMenuContent align="end" className="bg-white">
-              <DropdownMenuItem className="text-14 flex items-center gap-2 hover:bg-gray-50 cursor-pointer ease-in-out duration-200">
-                <SalesDialog />
-              </DropdownMenuItem>
-            </DropdownMenuContent> */}
-          </DropdownMenu>
-        </div>
-      );
-    },
-  },
+  //     return (
+  //       <div className="text-right">
+  //         <DropdownMenu>
+  //           <DropdownMenuTrigger asChild>
+  //             <Button variant="ghost" className="h-8 w-8 p-0 ">
+  //               <span className="sr-only">Open menu</span>
+  //               <SalesDialog />
+  //             </Button>
+  //           </DropdownMenuTrigger>
+  //           {/* <DropdownMenuContent align="end" className="bg-white">
+  //             <DropdownMenuItem className="text-14 flex items-center gap-2 hover:bg-gray-50 cursor-pointer ease-in-out duration-200">
+  //               <SalesDialog />
+  //             </DropdownMenuItem>
+  //           </DropdownMenuContent> */}
+  //         </DropdownMenu>
+  //       </div>
+  //     );
+  //   },
+  // },
 ];
