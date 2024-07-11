@@ -31,6 +31,8 @@ import {
 import { Input } from "@/components/ui/input";
 import React from "react";
 import { DataTablePagination } from "@/components/DataTablePagination";
+import { IoEyeOutline } from "react-icons/io5";
+import { FiEdit } from "react-icons/fi";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -148,6 +150,22 @@ export function DataTable<TData, TValue>({
                       )}
                     </TableCell>
                   ))}
+                  <TableCell className="text-right justify-end">
+                    <div className="text-end justify-end flex items-center gap-2 ">
+                      <div
+                        className="cursor-pointer"
+                        // onClick={() => handleEditClick(row.original)}
+                      >
+                        <FiEdit size={16} />
+                      </div>
+                      <div
+                        className="cursor-pointer"
+                        // onClick={() => handleEditClick(row.original)}
+                      >
+                        <IoEyeOutline size={19} />
+                      </div>
+                    </div>
+                  </TableCell>
                 </TableRow>
               ))
             ) : (
