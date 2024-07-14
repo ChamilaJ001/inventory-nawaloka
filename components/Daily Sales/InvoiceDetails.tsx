@@ -20,7 +20,7 @@ const InvoiceDetails = () => {
       setLoading(false);
     }
   }, [view, sales]);
-  console.log(selectedInvoice);
+
   return (
     <div className="px-3">
       <div className="flex flex-col">

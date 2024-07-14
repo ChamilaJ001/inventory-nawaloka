@@ -85,3 +85,40 @@ export const GET = async () => {
     return NextResponse.json(error, { status: 500 });
   }
 };
+
+// Update
+export const PUT = async (req: NextRequest) => {
+  const { id, updatedSale } = await req.json();
+  // const invoice = updatedSale.invoice;
+  //const data = { invoice, products, total, shop, status };
+
+  await connectDB();
+  try {
+    // const existingInvoice = await Sale.findOne({ invoice });
+    // if (existingInvoice) {
+    //   return new NextResponse(
+    //     JSON.stringify({ error: "Invoice no already exist." }),
+    //     {
+    //       status: 400,
+    //     }
+    //   );
+    // }
+
+    const updatedSales = await Sale.findByIdAndUpdate(id, updatedSale, {
+      new: true,
+    });
+
+    if (!updatedSales) {
+      return new NextResponse(
+        JSON.stringify({ message: "Invoice not found" }),
+        {
+          status: 404,
+        }
+      );
+    }
+
+    return new NextResponse(JSON.stringify(updatedSales), { status: 200 });
+  } catch (error) {
+    return NextResponse.json(error, { status: 500 });
+  }
+};

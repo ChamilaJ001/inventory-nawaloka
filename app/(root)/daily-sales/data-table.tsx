@@ -95,9 +95,11 @@ export function DataTable<TData, TValue>({
 
         <Input
           placeholder="Filter by date..."
-          value={(table.getColumn("date")?.getFilterValue() as string) ?? ""}
+          value={
+            (table.getColumn("createdAt")?.getFilterValue() as string) ?? ""
+          }
           onChange={(event) =>
-            table.getColumn("date")?.setFilterValue(event.target.value)
+            table.getColumn("createdAt")?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
         />

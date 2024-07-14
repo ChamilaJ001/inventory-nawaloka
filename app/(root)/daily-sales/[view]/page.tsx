@@ -11,6 +11,7 @@ import { FiEdit } from "react-icons/fi";
 import InvoiceDetails from "@/components/Daily Sales/InvoiceDetails";
 import { Button } from "@/components/ui/button";
 import EditInvoiceDetails from "@/components/Daily Sales/EditInvoiceDetails";
+import { IoEyeOutline } from "react-icons/io5";
 
 const EditProds = () => {
   const [editOrView, setEditOrView] = useState(true);
@@ -51,7 +52,11 @@ const EditProds = () => {
                       onClick={() => setEditOrView(!editOrView)}
                       className="text-white font-semibold text-14 bg-primary rounded-md px-4 py-3 hover:bg-indigo-500 ease-in-out duration-200"
                     >
-                      <FiEdit size={18} />
+                      {editOrView ? (
+                        <FiEdit size={18} />
+                      ) : (
+                        <IoEyeOutline size={18} />
+                      )}
                     </Button>
                   </div>
                 </CardTitle>

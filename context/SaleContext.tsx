@@ -75,31 +75,32 @@ export const SalesProvider = ({ children }: { children: ReactNode }) => {
 
   // Update Product
   const updateSale = async (id: any, updatedSale: any) => {
-    // setLoading(true);
-    // try {
-    //   const res = await axios.put(`/api/products/${id}`, updatedProduct);
-    //   if (res.status === 400) {
-    //     toast.error("Product already created with this name!");
-    //   }
-    //   if (res.status === 404) {
-    //     toast.error("Product not found!");
-    //   }
-    //   if (res.status === 200) {
-    //     toast.success("Successfully updated!");
-    //     const updatedProduct = res.data;
-    //     console.log(updatedProduct);
-    //     const updatedProducts = sales.map((product) =>
-    //       product._id === updatedProduct._id ? updatedProduct : product
-    //     );
-    //     setSales(updatedProducts);
-    //     router.push("/products");
-    //   }
-    // } catch (error) {
-    //   console.error("Error updating product:", error);
-    //   toast.error("Faild to updating product!");
-    // } finally {
-    //   setLoading(false);
-    // }
+    setLoading(true);
+    try {
+      const res = await axios.put("/api/daily-sales/add-new/", {
+        id,
+        updatedSale,
+      });
+      if (res.status === 400) {
+        toast.error("Invoice already created with this no!");
+      }
+      if (res.status === 404) {
+        toast.error("Invoice not found!");
+      }
+      if (res.status === 200) {
+        toast.success("Successfully updated!");
+        const updatedSale = res.data;
+        const updatedSales = sales.map((sale) =>
+          sale._id === updatedSale._id ? updatedSale : sale
+        );
+        setSales(updatedSales);
+      }
+    } catch (error) {
+      console.error("Error updating sale:", error);
+      toast.error("Faild to updating sale!");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
