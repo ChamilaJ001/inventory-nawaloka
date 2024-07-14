@@ -29,10 +29,11 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { DataTablePagination } from "@/components/DataTablePagination";
 import { IoEyeOutline } from "react-icons/io5";
 import { FiEdit } from "react-icons/fi";
+import { useRouter } from "next/navigation";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -66,6 +67,19 @@ export function DataTable<TData, TValue>({
       columnVisibility,
     },
   });
+
+  const [selectedInvoice, setSelectedInvoice] = useState<Sale | null>(null);
+  const router = useRouter();
+
+  const handleEditClick = (productData: any) => {
+    setSelectedInvoice(productData);
+  };
+
+  useEffect(() => {
+    if (selectedInvoice) {
+      router.push(`/daily-sales/${selectedInvoice._id}`);
+    }
+  }, [selectedInvoice, router]);
 
   return (
     <div className="px-3">
@@ -152,15 +166,15 @@ export function DataTable<TData, TValue>({
                   ))}
                   <TableCell className="text-right justify-end">
                     <div className="text-end justify-end flex items-center gap-2 ">
-                      <div
+                      {/* <div
                         className="cursor-pointer"
-                        // onClick={() => handleEditClick(row.original)}
+                        onClick={() => handleEditClick(row.original)}
                       >
                         <FiEdit size={16} />
-                      </div>
+                      </div> */}
                       <div
                         className="cursor-pointer"
-                        // onClick={() => handleEditClick(row.original)}
+                        onClick={() => handleEditClick(row.original)}
                       >
                         <IoEyeOutline size={19} />
                       </div>

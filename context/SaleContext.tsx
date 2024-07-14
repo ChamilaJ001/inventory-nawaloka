@@ -19,7 +19,7 @@ interface Sale {
   shop: string;
   status: string;
   qty: number;
-  date: string;
+  createdAt: string;
 }
 
 interface SaleContextProps {

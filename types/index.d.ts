@@ -49,6 +49,18 @@ interface Product {
   shopName?: string;
 }
 
+interface Sale {
+  _id: string;
+  invoice: string;
+  code: string;
+  products: [];
+  total: number;
+  shop: string;
+  status: string;
+  qty: number;
+  createdAt: string;
+}
+
 declare type LoginUser = {
   email: string;
   password: string;
