@@ -24,7 +24,7 @@ export type SalesProps = {
   qty: number;
   total: number;
   status: string;
-  date: string;
+  createdAt: string;
 };
 
 export const columns: ColumnDef<SalesProps>[] = [

@@ -4,17 +4,17 @@ import Header from "@/components/Header";
 import PageHeading from "@/components/PageHeading";
 import SideBar from "@/components/SideBar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import React from "react";
+import React, { useState } from "react";
 import { TbFileInvoice } from "react-icons/tb";
 import Link from "next/link";
 import { FiEdit } from "react-icons/fi";
 import InvoiceDetails from "@/components/Daily Sales/InvoiceDetails";
-import { useSales } from "@/context/SaleContext";
-import { Loader } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import EditInvoiceDetails from "@/components/Daily Sales/EditInvoiceDetails";
 
 const EditProds = () => {
-  const { loading, sales } = useSales();
+  const [editOrView, setEditOrView] = useState(true);
+
   return (
     <section className="home">
       <SideBar />
@@ -47,20 +47,17 @@ const EditProds = () => {
                     Invoice Details
                   </div>
                   <div className="text-white">
-                    <Button className="text-white font-semibold text-14 bg-primary rounded-md px-4 py-3 hover:bg-indigo-500 ease-in-out duration-200">
+                    <Button
+                      onClick={() => setEditOrView(!editOrView)}
+                      className="text-white font-semibold text-14 bg-primary rounded-md px-4 py-3 hover:bg-indigo-500 ease-in-out duration-200"
+                    >
                       <FiEdit size={18} />
                     </Button>
                   </div>
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                {loading ? (
-                  <div className="flex justify-center items-center ">
-                    <Loader size={20} className="animate-spin" />
-                  </div>
-                ) : (
-                  <InvoiceDetails />
-                )}
+                {editOrView ? <InvoiceDetails /> : <EditInvoiceDetails />}
               </CardContent>
             </Card>
           </div>
