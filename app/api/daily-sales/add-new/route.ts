@@ -1,4 +1,5 @@
 import connectDB from "@/lib/db";
+import Product from "@/models/Products";
 import Sale from "@/models/Sales";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -31,7 +32,27 @@ export const POST = async (req: NextRequest) => {
 
   try {
     await newInvoice.save();
+
+    // Update product quantities based on the updated sale's products
+    for (const item of products) {
+      const product = await Product.findById(item.productId);
+      if (product) {
+        product.quantity -= item.saleQuantity; // Apply the new quantity change
+        await product.save();
+      }
+    }
+
     const formattedCreatedAt = newInvoice.createdAt.toISOString().split("T")[0];
+
+    // Update product quantities based on the invoice
+    for (const item of products) {
+      const product = await Product.findById(item._id); // Assuming each product in the invoice has a productId field
+      if (product) {
+        product.quantity -= item.qty; // Decrease the quantity by the amount sold
+        await product.save();
+      }
+      console.log(product);
+    }
 
     // Add category name and shop name to the shop response
     const shopWithDetails = {
@@ -87,54 +108,147 @@ export const GET = async () => {
 };
 
 // Update
-export const PUT = async (req: NextRequest) => {
-  const { id, updatedSale } = await req.json();
-  // const invoice = updatedSale.invoice;
-  //const data = { invoice, products, total, shop, status };
+// export const PUT = async (req: NextRequest) => {
+//   const { id, updatedSale } = await req.json();
+//   // const invoice = updatedSale.invoice;
+//   //const data = { invoice, products, total, shop, status };
 
-  await connectDB();
-  try {
-    // const existingInvoice = await Sale.findOne({ invoice });
-    // if (existingInvoice) {
-    //   return new NextResponse(
-    //     JSON.stringify({ error: "Invoice no already exist." }),
-    //     {
-    //       status: 400,
-    //     }
-    //   );
-    // }
+//   await connectDB();
+//   try {
+//     const updatedSales = await Sale.findByIdAndUpdate(id, updatedSale, {
+//       new: true,
+//     });
 
-    const updatedSales = await Sale.findByIdAndUpdate(id, updatedSale, {
-      new: true,
-    });
+//     if (!updatedSales) {
+//       return new NextResponse(
+//         JSON.stringify({ message: "Invoice not found" }),
+//         {
+//           status: 404,
+//         }
+//       );
+//     }
 
-    if (!updatedSales) {
-      return new NextResponse(
-        JSON.stringify({ message: "Invoice not found" }),
-        {
-          status: 404,
-        }
-      );
-    }
+//     const formattedCreatedAt = updatedSales.createdAt
+//       .toISOString()
+//       .split("T")[0];
 
-    const formattedCreatedAt = updatedSales.createdAt
-      .toISOString()
-      .split("T")[0];
-    const saleWithDetails = {
-      _id: updatedSales._id,
-      invoice: updatedSales.invoice,
-      products: updatedSales.products,
-      total: updatedSales.total,
-      shop: updatedSales.shop,
-      status: updatedSales.status,
-      is_delete: updatedSales.is_delete,
-      createdAt: formattedCreatedAt,
-      updatedAt: updatedSales.updatedAt,
-      __v: updatedSales.__v,
-    };
+//     // Update product quantities based on the invoice
+//     // for (const item of updatedSale.products) {
+//     //   const product = await Product.findById(item.productId);
+//     //   if (product) {
+//     //     product.quantity -= item.saleQuantity;
+//     //     await product.save();
+//     //   }
+//     //   // console.log(product);
+//     // }
 
-    return new NextResponse(JSON.stringify(saleWithDetails), { status: 200 });
-  } catch (error) {
-    return NextResponse.json(error, { status: 500 });
-  }
-};
+//     for (const item of updatedSale.products) {
+//       const invoice = await Sale.findById(id);
+//       let num = 0;
+//       if (invoice) {
+//         invoice.products[num].existingQuantity -= item.saleQuantity;
+//         num++;
+//         await invoice.save();
+//       }
+//     }
+
+//     const saleWithDetails = {
+//       _id: updatedSales._id,
+//       invoice: updatedSales.invoice,
+//       products: updatedSales.products,
+//       total: updatedSales.total,
+//       shop: updatedSales.shop,
+//       status: updatedSales.status,
+//       is_delete: updatedSales.is_delete,
+//       createdAt: formattedCreatedAt,
+//       updatedAt: updatedSales.updatedAt,
+//       __v: updatedSales.__v,
+//     };
+
+//     return new NextResponse(JSON.stringify(saleWithDetails), { status: 200 });
+//   } catch (error) {
+//     return NextResponse.json(error, { status: 500 });
+//   }
+// };
+
+// export const PUT = async (req: NextRequest) => {
+//   const { id, updatedSale } = await req.json();
+
+//   await connectDB();
+//   try {
+//     const existingSale = await Sale.findById(id);
+
+//     if (!existingSale) {
+//       return new NextResponse(
+//         JSON.stringify({ message: "Invoice not found" }),
+//         {
+//           status: 404,
+//         }
+//       );
+//     }
+
+//     // Revert product quantities based on the existing sale's products
+//     // for (const item of existingSale.products) {
+//     //   const product = await Product.findById(item.productId);
+//     //   if (product) {
+//     //     product.quantity += item.saleQuantity; // Revert the previous quantity change
+//     //     await product.save();
+//     //   }
+//     // }
+
+//     // Update product quantities based on the updated sale's products
+//     // for (const item of updatedSale.products) {
+//     //   const product = await Product.findById(item.productId);
+//     //   if (product) {
+//     //     product.quantity -= item.saleQuantity; // Apply the new quantity change
+//     //     await product.save();
+//     //   }
+//     // }
+
+//     // Update the sale's products with the new existingQuantity
+//     let updatedSaleProducts = [];
+//     for (const item of updatedSale.products) {
+//       const saleProduct = existingSale.products.find(
+//         (p: any) => p.productId.toString() === item.productId
+//       );
+//       if (saleProduct) {
+//         saleProduct.existingQuantity -= item.saleQuantity; // Update the existingQuantity in the sale
+//       }
+//       updatedSaleProducts.push(saleProduct);
+//     }
+
+//     // // Update the sale details
+//     existingSale.invoice = updatedSale.invoice;
+//     existingSale.products = updatedSaleProducts;
+//     existingSale.total = updatedSale.total;
+//     existingSale.shop = updatedSale.shop;
+//     existingSale.status = updatedSale.status;
+
+//     // const updatedSales = await existingSale.save();
+//     const updatedSales = await Sale.findByIdAndUpdate(id, existingSale, {
+//       new: true,
+//     });
+//     console.log(updatedSales);
+
+//     const formattedCreatedAt = updatedSales.createdAt
+//       .toISOString()
+//       .split("T")[0];
+
+//     const saleWithDetails = {
+//       _id: updatedSales._id,
+//       invoice: updatedSales.invoice,
+//       products: updatedSales.products,
+//       total: updatedSales.total,
+//       shop: updatedSales.shop,
+//       status: updatedSales.status,
+//       is_delete: updatedSales.is_delete,
+//       createdAt: formattedCreatedAt,
+//       updatedAt: updatedSales.updatedAt,
+//       __v: updatedSales.__v,
+//     };
+
+//     return new NextResponse(JSON.stringify(saleWithDetails), { status: 200 });
+//   } catch (error) {
+//     return NextResponse.json(error, { status: 500 });
+//   }
+// };

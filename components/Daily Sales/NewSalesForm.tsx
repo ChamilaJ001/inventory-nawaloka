@@ -20,7 +20,7 @@ import { exit } from "process";
 const NewSalesForm = () => {
   const { createSale } = useSales();
   const [loading, setLoading] = useState(false);
-  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  // const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
   const formSchema: any = salesFormSchema();
 
@@ -28,7 +28,7 @@ const NewSalesForm = () => {
   const [selectedProducts, setSelectedProducts] = useState<Product[] | null>(
     null
   );
-
+  console.log(selectedProducts);
   useEffect(() => {
     if (id) {
       // Decode the URL parameter and split it correctly
