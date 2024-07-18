@@ -62,7 +62,11 @@ const EditProds = () => {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                {editOrView ? <InvoiceDetails /> : <EditInvoiceDetails />}
+                {editOrView ? (
+                  <InvoiceDetails />
+                ) : (
+                  <EditInvoiceDetails setEditOrView={setEditOrView} />
+                )}
               </CardContent>
             </Card>
           </div>

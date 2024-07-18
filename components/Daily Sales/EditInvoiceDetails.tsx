@@ -14,7 +14,7 @@ import { useParams } from "next/navigation";
 import { FaCartShopping } from "react-icons/fa6";
 import { useSales } from "@/context/SaleContext";
 
-const EditInvoiceDetails = () => {
+const EditInvoiceDetails = ({ setEditOrView }: any) => {
   const { updateSale } = useSales();
   const [loading, setLoading] = useState(false);
 
@@ -37,7 +37,7 @@ const EditInvoiceDetails = () => {
     resolver: zodResolver(formSchema),
     defaultValues: {
       invoice: selectedInvoice?.invoice,
-      total: selectedInvoice?.total,
+      total: selectedInvoice?.total?.toString() || "0",
       status: selectedInvoice?.status,
       shop: selectedInvoice?.shop,
       products:
@@ -46,7 +46,7 @@ const EditInvoiceDetails = () => {
           name: product?.name,
           code: product?.code,
           existingQuantity: product.existingQuantity,
-          saleQuantity: product.saleQuantity,
+          saleQuantity: product.saleQuantity?.toString() || "0",
         })) || [],
     },
   });
@@ -55,7 +55,7 @@ const EditInvoiceDetails = () => {
     if (selectedInvoice) {
       form.reset({
         invoice: selectedInvoice?.invoice,
-        total: selectedInvoice?.total,
+        total: selectedInvoice?.total?.toString() || "0",
         status: selectedInvoice?.status,
         shop: selectedInvoice?.shop,
         products:
@@ -64,31 +64,49 @@ const EditInvoiceDetails = () => {
             name: product?.name,
             code: product?.code,
             existingQuantity: product.existingQuantity,
-            saleQuantity: product.saleQuantity,
+            saleQuantity: product.saleQuantity?.toString() || "0",
           })) || [],
       });
     }
   }, [selectedInvoice, form]);
 
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
-    console.log(data);
-    // const saleQuantities = data.products.map(
-    //   (product: any) => product.saleQuantity
-    // );
-    // if (selectedInvoice) {
-    //   saleQuantities.forEach((saleQuantity: any) => {
-    //     if (selectedInvoice.products.existingQuantity < saleQuantity) {
-    //       alert(
-    //         `Insufficient quantity for product ${selectedInvoice.products.code}`
-    //       );
-    //     }
-    //   });
-    // }
-    try {
-      const id = selectedInvoice?._id;
-      updateSale(id, data);
-    } catch (error) {
-      console.log(error);
+    const saleQuantities = data.products.map(
+      (product: any) => product.saleQuantity
+    );
+
+    const extQuantities = data.products.map(
+      (product: any) => product.existingQuantity
+    );
+
+    const code = data.products.map((product: any) => product.code);
+
+    if (selectedInvoice) {
+      const errors: any = [];
+
+      saleQuantities.forEach((saleQuantity: any, index: any) => {
+        // extQuantities.forEach((extQty: any) => {
+        //   if (extQty < saleQuantity) {
+        //     errors.push(
+        //       `Insufficient quantity for product ${selectedInvoice?.products[index].code}`
+        //     );
+        //   }
+        // });
+        if (extQuantities[index] < saleQuantity) {
+          errors.push(`Insufficient quantity for product ${code[index]}`);
+        }
+      });
+
+      if (errors.length > 0) {
+        alert(errors.join("\n"));
+      } else {
+        try {
+          await updateSale(view, data);
+          setEditOrView(true);
+        } catch (error) {
+          console.log(error);
+        }
+      }
     }
   };
 

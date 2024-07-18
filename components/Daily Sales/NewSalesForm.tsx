@@ -15,6 +15,7 @@ import axios from "axios";
 import { useParams } from "next/navigation";
 import { FaCartShopping } from "react-icons/fa6";
 import { useSales } from "@/context/SaleContext";
+import { exit } from "process";
 
 const NewSalesForm = () => {
   const { createSale } = useSales();
@@ -97,19 +98,25 @@ const NewSalesForm = () => {
     );
 
     if (selectedProducts) {
+      const errors: any = [];
+
       saleQuantities.forEach((saleQuantity: any, index: any) => {
         if (selectedProducts[index].qty < saleQuantity) {
-          alert(
+          errors.push(
             `Insufficient quantity for product ${selectedProducts[index].code}`
           );
         }
       });
-    }
 
-    try {
-      createSale(data);
-    } catch (error) {
-      console.log(error);
+      if (errors.length > 0) {
+        alert(errors.join("\n"));
+      } else {
+        try {
+          await createSale(data);
+        } catch (error) {
+          console.log(error);
+        }
+      }
     }
   };
 

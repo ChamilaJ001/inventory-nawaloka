@@ -59,6 +59,7 @@ interface Sale {
   status: string;
   qty: number;
   createdAt: string;
+  existingQuantity?: number;
 }
 
 declare type LoginUser = {

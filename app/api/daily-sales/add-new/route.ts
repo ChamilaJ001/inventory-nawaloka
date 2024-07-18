@@ -117,7 +117,23 @@ export const PUT = async (req: NextRequest) => {
       );
     }
 
-    return new NextResponse(JSON.stringify(updatedSales), { status: 200 });
+    const formattedCreatedAt = updatedSales.createdAt
+      .toISOString()
+      .split("T")[0];
+    const saleWithDetails = {
+      _id: updatedSales._id,
+      invoice: updatedSales.invoice,
+      products: updatedSales.products,
+      total: updatedSales.total,
+      shop: updatedSales.shop,
+      status: updatedSales.status,
+      is_delete: updatedSales.is_delete,
+      createdAt: formattedCreatedAt,
+      updatedAt: updatedSales.updatedAt,
+      __v: updatedSales.__v,
+    };
+
+    return new NextResponse(JSON.stringify(saleWithDetails), { status: 200 });
   } catch (error) {
     return NextResponse.json(error, { status: 500 });
   }
