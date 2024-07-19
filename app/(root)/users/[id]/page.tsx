@@ -1,14 +1,17 @@
+"use client";
+
 import Header from "@/components/Header";
 import PageHeading from "@/components/PageHeading";
 import SideBar from "@/components/SideBar";
-import Link from "next/link";
-import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import React from "react";
+import { FaCartShopping } from "react-icons/fa6";
+import Link from "next/link";
+import EditProducts from "@/components/Products/EditProducts";
 import { LuUsers } from "react-icons/lu";
-import ProductsForm from "@/components/Products/ProductsForm";
-import UsersForm from "@/components/Users/UsersForm";
+import EditUser from "@/components/Users/EditUser";
 
-const AddNewUser = () => {
+const EditUsers = () => {
   return (
     <section className="home">
       <SideBar />
@@ -18,19 +21,15 @@ const AddNewUser = () => {
         </header>
 
         <section className="px-2">
-          <PageHeading
-            title={"Create New Users"}
-            bred3={"Users"}
-            bred3link={"/users"}
-          />
+          <PageHeading title={"Manage Users"} />
 
           <div className="mt-8">
-            <div className="text-end text-white masx-w-sm:px-12">
+            <div className="flex items-center justify-end gap-2 text-white max-w-sm:px-12">
               <Link
                 href={"/users"}
-                className="text-white font-semibold text-14 bg-primary rounded-md px-4 py-3"
+                className="text-white font-semibold text-14 bg-primary rounded-md px-4 py-3 hover:bg-indigo-500 ease-in-out duration-200"
               >
-                Back to users list
+                Back to list
               </Link>
             </div>
 
@@ -42,13 +41,12 @@ const AddNewUser = () => {
                       className="bg-primaryLight text-primary p-2 rounded-md"
                       size={35}
                     />
-                    Add User Details
+                    Edit Users
                   </div>
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                {/* Form */}
-                <UsersForm />
+                <EditUser />
               </CardContent>
             </Card>
           </div>
@@ -58,4 +56,4 @@ const AddNewUser = () => {
   );
 };
 
-export default AddNewUser;
+export default EditUsers;

@@ -3,6 +3,7 @@ import { Inter, IBM_Plex_Serif } from "next/font/google";
 import "./globals.css";
 import { ProductsProvider } from "@/context/ProductsContext";
 import { SalesProvider } from "@/context/SaleContext";
+import { UsersProvider } from "@/context/UserContext";
 // import { getServerSession } from "next-auth";
 // import AuthProvider from "@/utils/SessionProvider";
 
@@ -31,9 +32,11 @@ export default async function RootLayout({
     <html lang="en">
       <body className={`${inter.variable} ${ibmPlexSerif.variable}`}>
         {/* <AuthProvider session={session}>{children}</AuthProvider> */}
-        <ProductsProvider>
-          <SalesProvider>{children}</SalesProvider>
-        </ProductsProvider>
+        <UsersProvider>
+          <ProductsProvider>
+            <SalesProvider>{children}</SalesProvider>
+          </ProductsProvider>
+        </UsersProvider>
       </body>
     </html>
   );

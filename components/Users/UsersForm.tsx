@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Button } from "./ui/button";
+
 import { Form } from "@/components/ui/form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -10,12 +10,16 @@ import { userFormSchema } from "@/lib/utils";
 import { Loader2 } from "lucide-react";
 import CustomInput from "@/components/CustomInput";
 import { useState } from "react";
-import CustomSelect from "./SelectBox";
+
 import axios from "axios";
 import { toast } from "react-hot-toast";
+import { Button } from "../ui/button";
+import CustomSelect from "../SelectBox";
+import { useUsers } from "@/context/UserContext";
 
 function UsersForm() {
   const [loading, setLoading] = useState(false);
+  const { createUser } = useUsers();
 
   const formSchema = userFormSchema();
 
@@ -23,7 +27,7 @@ function UsersForm() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: "",
+      username: "",
       role: "",
       shop: "",
       email: "",
@@ -33,33 +37,10 @@ function UsersForm() {
   });
 
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
-    setLoading(true);
-    console.log(data);
-    const username = data.name;
-    const email = data.email;
-    const role = data.role;
-    const shop = data.shop;
-    const password = data.password;
-    const status = data.status;
     try {
-      const res = await axios.post("/api/users", {
-        username,
-        email,
-        role,
-        shop,
-        password,
-        status,
-      });
-
-      if (res.status === 400) {
-        toast.error("Email already registered!");
-      } else if (res.status == 201) {
-        toast.success("Successfully created!");
-      }
+      createUser(data);
     } catch (error) {
       console.log(error);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -70,7 +51,7 @@ function UsersForm() {
           <div className="grid grid-cols-2 gap-3 max-sm:grid-cols-1">
             <CustomInput
               control={form.control}
-              name="name"
+              name="username"
               label="User Name"
               formSchema={formSchema}
               placeholder="Enter user name"
@@ -95,7 +76,7 @@ function UsersForm() {
               formSchema={formSchema}
               label="User Role"
               placeholder="Select role"
-              options={["Owner", "Manager", "Super Admin", "Admin"]}
+              options={["Super Admin", "Admin"]}
               required={true}
             />
             <CustomSelect
@@ -132,7 +113,7 @@ function UsersForm() {
           <div className="w-full">
             <Button
               type="submit"
-              className="text-white font-semibold text-15"
+              className="text-16 rounded-lg border border-primary bg-primary font-semibold text-white"
               disabled={loading}
             >
               {loading ? (

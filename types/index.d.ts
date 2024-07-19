@@ -68,19 +68,14 @@ declare type LoginUser = {
 };
 
 declare type User = {
-  $id: string;
+  _id: string;
+  username: string;
   email: string;
-  userId: string;
-  dwollaCustomerUrl: string;
-  dwollaCustomerId: string;
-  firstName: string;
-  lastName: string;
-  address1: string;
-  city: string;
-  state: string;
-  postalCode: string;
-  dateOfBirth: string;
-  ssn: string;
+  role: string;
+  shop: string;
+  status: string;
+  is_delete: string;
+  password: string;
 };
 
 declare type NewUserParams = {

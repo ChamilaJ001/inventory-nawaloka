@@ -19,7 +19,11 @@ const AddProductSales = () => {
         </header>
 
         <section className="px-2">
-          <PageHeading title={"Manage Sales"} />
+          <PageHeading
+            title={"Create New Sales"}
+            bred3={"Daily Sales"}
+            bred3link={"/daily-sales"}
+          />
 
           <div className="mt-8">
             <div className="flex items-center justify-end gap-2 text-white max-w-sm:px-12">

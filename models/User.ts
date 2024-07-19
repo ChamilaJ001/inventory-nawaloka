@@ -8,6 +8,7 @@ const userSchema = new mongoose.Schema(
     shop: { type: String, required: true },
     password: { type: String, required: true },
     status: { type: String, required: true },
+    is_delete: { type: Number, required: true },
   },
   { timestamps: true }
 );

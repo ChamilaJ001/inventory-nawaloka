@@ -29,8 +29,12 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { DataTablePagination } from "@/components/DataTablePagination";
+import DeleteAlertBox from "@/components/Reusable/DeleteAlertBox";
+import { FiEdit } from "react-icons/fi";
+import { useRouter } from "next/navigation";
+import { useUsers } from "@/context/UserContext";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -65,14 +69,49 @@ export function DataTable<TData, TValue>({
     },
   });
 
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  const [selectedUserDelete, setSelectedUserDelete] = useState<User | null>(
+    null
+  );
+  const router = useRouter();
+  const { deleteUser } = useUsers();
+
+  const handleEditClick = (userData: any) => {
+    setSelectedUser(userData);
+  };
+
+  useEffect(() => {
+    if (selectedUser) {
+      router.push(`/users/${selectedUser._id}`);
+    }
+  }, [selectedUser, router]);
+
+  const handleGetId = (id: any) => {
+    setSelectedUserDelete(id);
+  };
+
+  const handleDelete = async () => {
+    const id = selectedUserDelete?._id;
+
+    try {
+      if (id) {
+        deleteUser(id);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="px-3">
       <div className="flex items-center gap-2 py-2">
         <Input
           placeholder="Filter by name..."
-          value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
+          value={
+            (table.getColumn("username")?.getFilterValue() as string) ?? ""
+          }
           onChange={(event) =>
-            table.getColumn("name")?.setFilterValue(event.target.value)
+            table.getColumn("username")?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
         />
@@ -96,7 +135,7 @@ export function DataTable<TData, TValue>({
             {table
               .getAllColumns()
               .filter((column) => column.getCanHide())
-              .map((column) => {
+              .map((column: any) => {
                 return (
                   <DropdownMenuCheckboxItem
                     key={column.id}
@@ -148,6 +187,20 @@ export function DataTable<TData, TValue>({
                       )}
                     </TableCell>
                   ))}
+                  <TableCell className="text-right justify-end">
+                    <div className="text-end justify-end flex items-center gap-2 ">
+                      <div
+                        className="cursor-pointer"
+                        onClick={() => handleEditClick(row.original)}
+                      >
+                        <FiEdit size={16} />
+                      </div>
+
+                      <div onClick={() => handleGetId(row.original)}>
+                        <DeleteAlertBox handleDelete={handleDelete} />
+                      </div>
+                    </div>
+                  </TableCell>
                 </TableRow>
               ))
             ) : (

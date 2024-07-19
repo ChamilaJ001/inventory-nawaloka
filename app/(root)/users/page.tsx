@@ -1,45 +1,20 @@
+"use client";
+
 import Header from "@/components/Header";
 import PageHeading from "@/components/PageHeading";
 import SideBar from "@/components/SideBar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import React from "react";
 import { LuUsers } from "react-icons/lu";
-import { UserProps, columns } from "./columns";
+import { columns } from "./columns";
 import { DataTable } from "./data-table";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { useUsers } from "@/context/UserContext";
+import { Loader } from "lucide-react";
 
-const Products = async () => {
-  async function getData(): Promise<UserProps[]> {
-    // Fetch data from your API here.
-    return [
-      {
-        id: "728ed52f",
-        name: "Chamila Jayasinghe",
-        email: "chamila@gmail.com",
-        shop: "Kandy",
-        role: "Manager",
-        status: "Active",
-      },
-      {
-        id: "728ed52g",
-        name: "Nethmina Saranga",
-        email: "nethmina@gmail.com",
-        shop: "Kurunegala",
-        role: "Owner",
-        status: "Active",
-      },
-      {
-        id: "728ed52h",
-        name: "Kasun Herath",
-        email: "kasun@gmail.com",
-        shop: "Polonnaruwa",
-        role: "Admin",
-        status: "Active",
-      },
-    ];
-  }
-  const data = await getData();
+const Products = () => {
+  const { users, loading } = useUsers();
   return (
     <section className="home">
       <SideBar />
@@ -78,7 +53,13 @@ const Products = async () => {
               </CardHeader>
               <CardContent>
                 {/* Tabel */}
-                <DataTable columns={columns} data={data} />
+                {loading ? (
+                  <div className="flex justify-center items-center ">
+                    <Loader size={20} className="animate-spin" />
+                  </div>
+                ) : (
+                  <DataTable columns={columns} data={users} />
+                )}
               </CardContent>
             </Card>
           </div>

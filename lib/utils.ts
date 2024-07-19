@@ -257,7 +257,7 @@ export const productsFormSchema = () =>
 
 export const userFormSchema = () =>
   z.object({
-    name: z.string().nonempty("User name is required"),
+    username: z.string().nonempty("User name is required"),
     email: z.string().email(),
     role: z.string().nonempty("User role is required"),
     shop: z.string().nonempty("Shop is required"),
