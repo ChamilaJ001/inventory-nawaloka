@@ -14,9 +14,8 @@ import { useState, useTransition } from "react";
 import { Checkbox } from "@/components/ui/checkbox";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { signIn } from "@/auth";
 import toast from "react-hot-toast";
-import { AuthError } from "next-auth";
+import { login } from "@/actions/users";
 
 const SignIn = () => {
   const [loading, setLoading] = useState(false);
@@ -36,35 +35,15 @@ const SignIn = () => {
 
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
     setLoading(true);
-    const email = data.email;
-    const password = data.password;
-    // startTransition(() => {
-    //   const res = login(data);
-    // });
 
-    // try {
-    //   const res = await signIn("credentials", {
-    //     redirect: false,
-    //     email,
-    //     password,
-    //   });
-
-    //   if (res) {
-    //     console.log("success");
-    //     toast.success("Successfully Logged In!");
-    //   }
-    // } catch (error) {
-    //   if (error instanceof AuthError) {
-    //     switch (error.type) {
-    //       case "CredentialsSignin":
-    //         return toast.error("Invalid credentials!");
-    //       default:
-    //         return toast.error("Something went wrong!");
-    //     }
-    //   }
-
-    //   throw error;
-    // }
+    try {
+      await login(data);
+    } catch (error) {
+      toast.error("Login Faild!");
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (

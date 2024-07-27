@@ -11,7 +11,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "./ui/button";
 
 const PermissionTable = ({ module }: SettingsParams) => {
-  const roles = ["Owner", "Manager", "Super Admin", "Admin"];
+  const roles = ["Super Admin", "Admin"];
   return (
     <Table>
       <TableHeader className="bg-gray-50 rounded-md">
