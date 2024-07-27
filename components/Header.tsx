@@ -14,7 +14,7 @@ import {
 import { FiUser } from "react-icons/fi";
 import { IoMdLogOut } from "react-icons/io";
 import { TbSettings } from "react-icons/tb";
-import { signOut, useSession } from "next-auth/react";
+import { signOut } from "@/auth";
 
 const Header = () => {
   // const { data: session } = useSession();
@@ -89,8 +89,18 @@ const Header = () => {
               <Link href={"/settings"}>Settings</Link>
             </DropdownMenuItem>
             <DropdownMenuItem className="text-14 flex items-center gap-2 hover:bg-gray-50 rounded-md cursor-pointer">
-              <IoMdLogOut />
-              <p className="bg-white p-0 mt-0">Logout</p>
+              <form
+                action={async () => {
+                  "use server";
+                  await signOut();
+                }}
+                className="flex items-center gap-2"
+              >
+                <IoMdLogOut />
+                <button type="submit" className="bg-white p-0 mt-0">
+                  Logout
+                </button>
+              </form>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

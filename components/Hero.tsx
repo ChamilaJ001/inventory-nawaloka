@@ -8,12 +8,10 @@ import Link from "next/link";
 import ProductsByShop from "./ProductsByShop";
 import { LuUsers } from "react-icons/lu";
 import AnimatedCounter from "./AnimatedCounter";
-import { auth } from "@/auth";
 
 const Hero = async () => {
   // const session = await getServerSession(authOptions);
   // console.log(session?.user?.name);
-  const session = await auth();
   // const email = "chamila@gmail.com";
   // const user = await getUserByEmail(session?.user?.email);
   // console.log(user);
@@ -31,8 +29,7 @@ const Hero = async () => {
             />
 
             <p className="text-18 font-semibold  items-center gap-2">
-              Welcome back,{" "}
-              <span className="text-primary"> {session?.user?.name!}!</span>
+              Welcome back, <span className="text-primary"> Chamila!</span>
             </p>
           </div>
         </div>

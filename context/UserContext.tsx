@@ -13,7 +13,8 @@ import toast from "react-hot-toast";
 interface UserContextProps {
   users: User[];
   loading: boolean;
-  createUser: (product: any) => Promise<void>;
+  fetchUserByCredentials: (user: any) => Promise<void>;
+  createUser: (user: any) => Promise<void>;
   updateUser: (id: any, updatedUser: any) => Promise<void>;
   deleteUser: (id: string) => Promise<void>;
 }
@@ -33,6 +34,18 @@ export const UsersProvider = ({ children }: { children: ReactNode }) => {
     setLoading(true);
     try {
       const response = await axios.get("/api/users");
+      setUsers(response.data);
+    } catch (error) {
+      console.error("Error fetching users:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchUserByCredentials = async (user: any) => {
+    setLoading(true);
+    try {
+      const response = await axios.get("/api/users/getById", user);
       setUsers(response.data);
     } catch (error) {
       console.error("Error fetching users:", error);
@@ -120,7 +133,14 @@ export const UsersProvider = ({ children }: { children: ReactNode }) => {
 
   return (
     <UsersContext.Provider
-      value={{ users, loading, createUser, updateUser, deleteUser }}
+      value={{
+        users,
+        loading,
+        createUser,
+        updateUser,
+        deleteUser,
+        fetchUserByCredentials,
+      }}
     >
       {children}
     </UsersContext.Provider>
