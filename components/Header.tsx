@@ -1,3 +1,4 @@
+"use client";
 import Image from "next/image";
 import React from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -14,7 +15,7 @@ import {
 import { FiUser } from "react-icons/fi";
 import { IoMdLogOut } from "react-icons/io";
 import { TbSettings } from "react-icons/tb";
-import { signOut } from "@/auth";
+import { signOutUser } from "@/actions/users";
 
 const Header = () => {
   return (
@@ -89,14 +90,14 @@ const Header = () => {
             </DropdownMenuItem>
             <DropdownMenuItem className="text-14 flex items-center gap-2 hover:bg-gray-50 rounded-md cursor-pointer">
               <form
-                action={async () => {
-                  "use server";
-                  await signOut();
+                onSubmit={async (event) => {
+                  event.preventDefault();
+                  await signOutUser();
+                  // Handle successful sign-out, e.g., redirect
                 }}
-                className="flex items-center gap-2"
               >
                 <IoMdLogOut />
-                <button className="bg-white p-0 mt-0" type="submit">
+                <button type="submit" className="bg-white p-0 mt-0">
                   Logout
                 </button>
               </form>
