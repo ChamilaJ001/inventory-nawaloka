@@ -17,7 +17,6 @@ import { TbSettings } from "react-icons/tb";
 import { signOut } from "@/auth";
 
 const Header = () => {
-  // const { data: session } = useSession();
   return (
     <>
       <div className="header-logo">
@@ -97,7 +96,7 @@ const Header = () => {
                 className="flex items-center gap-2"
               >
                 <IoMdLogOut />
-                <button type="submit" className="bg-white p-0 mt-0">
+                <button className="bg-white p-0 mt-0" type="submit">
                   Logout
                 </button>
               </form>
